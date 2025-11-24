@@ -1,4 +1,18 @@
 .Rproj.user
 .Rhistory
-.RData
-.Ruserdata
+
+inst/doc
+docs
+
+/.quarto/
+/doc/
+/Meta/
+**/.quarto/
+
+/.luarc.json
+
+# Custom
+main_files
+
+*.pdf
+*.html

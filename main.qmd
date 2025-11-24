@@ -1,0 +1,36 @@
+---
+title: "Estudio de datos biométricos sobre Lucanus Cervus"
+author: 
+- Marcelo Atanasio Domínguez Mateo
+- Arminda García Moreno
+- Alejandro García Prada
+
+date: today
+format: 
+  html:
+    toc: true
+    theme: cosmo
+  pdf:
+    documentclass: article
+    number-sections: true
+    titlepage: false
+    toc-location: before-body
+    include-in-header: _extensions/tocdots/tocdots.tex
+    toc: true
+    toc-title: "Índice"
+    geometry:
+      - margin=25mm
+execute:
+  warning: false
+  echo: true
+---
+```{r, echo=FALSE}
+library(tidyverse)
+library(dplyr)
+```
+
+
+```{r, echo=FALSE}
+lab <- read.csv(file="data/lucanus.csv")
+lab |> slice_sample(n=150)
+```
