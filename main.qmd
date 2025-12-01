@@ -27,10 +27,40 @@ execute:
 ```{r, echo=FALSE}
 library(tidyverse)
 library(dplyr)
+library(ggplot2)
+library(psych)
 ```
 
 
 ```{r, echo=FALSE}
-lab <- read.csv(file="data/lucanus.csv")
-lab |> slice_sample(n=150)
+lab <- read.table(file = "data/lucanus.csv", header = TRUE, fill = TRUE)
+
+lab <- lab |>
+  mutate(
+      KB = as.numeric(gsub(",", ".", trimws(KB))),
+      EL = as.numeric(gsub(",", ".", trimws(EL))),
+      SEXO = as.factor(trimws(SEXO)),
+      PROVINCIA = ifelse(trimws(PROVINCIA) == "", "Otras", trimws(PROVINCIA)),
+      PROVINCIA = as.factor(trimws(PROVINCIA))
+  )
+
+summary(lab)
+```
+
+```{r, echo=FALSE}
+df <- lab |> 
+  slice_sample(n = 150, replace = FALSE)
+summary(df)
+```
+
+```{r, echo=FALSE}
+summary(df$KB)
+```
+
+```{r, echo=FALSE}
+ggplot(df, aes(x = KB)) +
+  geom_histogram(binwidth = 0.5) +
+  labs(title = "Head Width Distribution",
+       x = "Head Width (KB)",
+       y = "Frequency")
 ```
