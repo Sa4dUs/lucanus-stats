@@ -102,20 +102,6 @@ lab |>
   )
 ```
 
-```{r, echo=FALSE}
-lab |>
-  ggplot(aes(x = PROVINCIA, y = KB, fill = PROVINCIA)) +
-  geom_boxplot() +
-  theme_bw() +
-  labs(
-    x = "Province",
-    y = "Head Width(KB)",
-    title = "Comparison of head width between provinces",
-    fill = "Province"
-  ) +
-  scale_fill_manual(values = pastel_colors[c(4,8,12)])
-```
-La línea negra representa la mediana de los datos
 
 ```{r, echo=FALSE}
 lab |>
@@ -131,6 +117,34 @@ lab |>
     fill = "Province"
   )
 ```
+La línea negra representa la mediana de los datos
+
+```{r, echo=FALSE}
+ggplot(lab, aes(x = PROVINCIA, y = KB_int, fill = PROVINCIA)) +
+  geom_violin(trim = FALSE, color = "black", alpha = 0.6) + 
+  geom_jitter(width = 0.15, size = 1.5, alpha = 0.3, color = "black") +  # points
+  scale_fill_manual(values = pastel_colors[c(4,8,12)]) +
+  theme_bw() +
+  labs(
+    x = "Province",
+    y = "Head Width (KB)",
+    title = "Violin Plot of KB by Province",
+    fill = "Province"
+  )
+
+```
+
+```{r, echo=FALSE}
+with(
+  df, 
+  stby(
+    KB, 
+    PROVINCIA, 
+    descr
+  )
+)
+```
+
 
 ## Comparar la anchura de la cabeza de las hembras con la de los machos.
 ```{r, echo=FALSE}
