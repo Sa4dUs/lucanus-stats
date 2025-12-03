@@ -59,8 +59,15 @@ summary(df$KB)
 
 ```{r, echo=FALSE}
   ggplot(df, aes(x = KB)) +
-    geom_histogram(binwidth = 0.5, fill = "skyblue", color = "black") +
+    geom_histogram(binwidth = 0.5, fill = "skyblue",color = "black") +
     labs(title = "Head Width Distribution",
          x = "Head Width (KB)",
          y = "Frequency")
+```
+
+```{r, echo=FALSE}
+ggplot(df, aes(y = KB)) +
+  geom_boxplot(fill = "skyblue", color = "black") +
+  labs(title = "Boxplot de Head Width",
+       y = "Head Width (KB)")
 ```
