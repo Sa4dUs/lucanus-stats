@@ -29,6 +29,8 @@ library(tidyverse)
 library(dplyr)
 library(ggplot2)
 library(psych)
+library(knitr)
+library(summarytools)
 ```
 
 
@@ -71,3 +73,72 @@ ggplot(df, aes(y = KB)) +
   labs(title = "Boxplot de Head Width",
        y = "Head Width (KB)")
 ```
+
+## Comparación de la Cabeza entre las Provincias
+Se agrupan los valores de KB en su parte entera para mejor legibilidad de los datos
+```{r, echo=FALSE}
+lab$KB_int <- floor(lab$KB)
+pastel_colors <- c(
+  "#E0F7FF", "#D1F0FF", "#C2E9FF", "#B3E2FF", "#A4DBFF", "#95D4FF", "#86CDFF", "#77C6FF", "#68BFFF", "#59B8FF", "#4AAFFF", "#3BA8FF", "#2CA1FF", "#1D9AFF", "#0E93FF", "#008CFF", "#007FCC", "#0073A6"
+)
+```
+
+```{r, echo=FALSE}
+tabla_contingencia <- summarytools::ctable(lab$KB_int, lab$PROVINCIA)
+tabla_contingencia
+```
+```{r, echo=FALSE}
+lab |> 
+  ggplot(aes(x = PROVINCIA, fill = factor(KB_int))) +
+  geom_bar() +
+  scale_fill_manual(values = pastel_colors) +
+  theme_bw() +
+  labs(
+    x = "Province",          
+    y = "Count",             
+    fill = "KB Value"    
+  )
+```
+```{r, echo=FALSE}
+lab |>
+  ggplot(aes(x = PROVINCIA, fill = factor(KB_int))) +
+  geom_bar(position = position_dodge(), color = "black") +
+  scale_fill_manual(values = pastel_colors) +
+  theme_bw() +
+  labs(
+    x = "Province",          
+    y = "Count",             
+    fill = "KB Value"    
+  )
+```
+
+```{r, echo=FALSE}
+lab |>
+  ggplot(aes(x = PROVINCIA, y = KB, fill = PROVINCIA)) +
+  geom_boxplot() +
+  theme_bw() +
+  labs(
+    x = "Province",
+    y = "Head Width(KB)",
+    title = "Comparison of head width between provinces",
+    fill = "Province"
+  ) +
+  scale_fill_manual(values = pastel_colors[c(4,8,12)])
+```
+La línea negra representa la mediana de los datos
+
+```{r, echo=FALSE}
+lab |>
+  ggplot(aes(x = PROVINCIA, y = KB, fill = PROVINCIA)) +
+  geom_boxplot(outlier.shape = NA, alpha = 0.6) +
+  geom_jitter(width = 0.2, size = 2, alpha = 0.3) +
+  scale_fill_manual(values = pastel_colors[c(4,8,12)]) +
+  theme_bw() +
+  labs(
+    x = "Province",
+    y = "Head Width (KB)",
+    title = "Comparison of head width between provinces",
+    fill = "Province"
+  )
+```
+
