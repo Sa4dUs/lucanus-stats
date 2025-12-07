@@ -34,7 +34,32 @@ library(knitr)
 library(kableExtra)
 ```
 
+## Objetivos del estudio
 
+El presente estudio se centra en el análisis biométrico del ciervo volante (Lucanus cervus), el mayor escarabajo de Europa, cuya población se ve amenazada por la destrucción de su hábitat natural, los bosques con abundante madera muerta. Este análisis tiene un doble interés: por un lado, evaluar posibles diferencias de tamaño entre machos y hembras; por otro, explorar la relación entre el tamaño de los individuos y la calidad del hábitat de procedencia, ya que se sospecha que en áreas con mayor disponibilidad y calidad de madera muerta los ejemplares alcanzan un mayor desarrollo.
+
+En este marco, el estudio se centra en la medición de la anchura de la cabeza y la longitud de los élitros en un total de 265 ejemplares, seleccionando una muestra representativa de 150 individuos. Se pretende realizar un análisis descriptivo de la anchura de la cabeza, destacando sus principales características y distribuciones dentro de la muestra.
+
+Además, se comparará la anchura de la cabeza entre machos y hembras para identificar diferencias morfológicas relacionadas con el sexo. De manera complementaria, se evaluará si existen variaciones significativas entre ejemplares de distintas procedencias (Asturias, Cantabria y otra), lo que permitirá analizar la influencia del origen geográfico y, por extensión, del hábitat sobre el tamaño de los individuos.
+
+Otro objetivo fundamental es analizar la correlación entre la anchura de la cabeza y la longitud del élitro, primero considerando toda la muestra y posteriormente separando por sexo. Este análisis permitirá determinar si existe una relación proporcional entre estas dos medidas y si dicha relación varía entre hembras y machos.
+
+Finalmente, en los casos en que se identifique una relación significativa entre la anchura de la cabeza y la longitud del élitro para algún sexo, se ajustará un modelo de regresión lineal que explique la variación de la anchura de la cabeza en función de la longitud del élitro, con el objetivo de interpretar cuantitativamente esta relación morfológica y su relevancia biológica.
+
+## Metodología
+
+El estudio se realizó utilizando ejemplares de la colección entomológica del Departamento de Biología de Organismos y Sistemas de la Universidad de Oviedo, incluyendo un total de 265 individuos de ciervo volante (Lucanus cervus), tanto machos como hembras, provenientes de Asturias, Cantabria y otras zonas. Para cada ejemplar se registraron la anchura de la cabeza (KB) y la longitud del élitro (EL) en milímetros, así como el sexo y la provincia de procedencia.
+
+Se seleccionó una muestra aleatoria de 150 individuos para el análisis descriptivo, asegurando que la muestra reflejara adecuadamente la variabilidad de la población. Los datos fueron previamente limpiados y transformados: los valores numéricos fueron convertidos a formato adecuado, se corrigieron inconsistencias y se clasificó la procedencia de los ejemplares en tres categorías: Asturias, Cantabria y otras.
+
+El análisis estadístico incluyó la obtención de medidas de tendencia central y de dispersión para la anchura de la cabeza y la longitud del élitro, con el fin de caracterizar la muestra. Se realizaron comparaciones de la anchura de la cabeza entre machos y hembras y entre ejemplares de distintas procedencias mediante tablas de frecuencia, gráficos de barras, boxplots y violín plots.
+
+Se analizó la relación entre la anchura de la cabeza y la longitud del élitro mediante coeficientes de correlación para toda la muestra y por sexo, con el objetivo de identificar posibles asociaciones morfológicas. En los casos en los que se detectó una correlación significativa, se ajustó un modelo de regresión lineal para explicar la variación de la anchura de la cabeza en función de la longitud del élitro y se interpretaron los parámetros obtenidos en términos biológicos.
+
+Para la visualización de los datos y la generación de gráficos se utilizó el software R, empleando principalmente los paquetes ggplot2 y summarytools. Se elaboraron histogramas, boxplots, violín plots y tablas descriptivas que permitieron explorar la distribución de las variables, identificar diferencias entre grupos y mostrar la relación entre la anchura de la cabeza y la longitud del élitro de manera clara y reproducible.
+
+## Resultados
+### Análisis descriptivo de todos los ejemplares
 ```{r, echo=FALSE}
 lab <- read.table(file = "data/lucanus.csv", header = TRUE, fill = TRUE)
 
@@ -49,17 +74,26 @@ lab <- lab |>
 
 summary(lab)
 ```
+Se comenzó con el procesamiento y limpieza de los datos de los 265 ejemplares de Lucanus cervus. Para cada individuo se registraron la anchura de la cabeza (KB), la longitud de los élitros (EL), el sexo y la provincia de procedencia (Asturias, Cantabria u otras). Se verificaron los formatos de las variables, se corrigieron inconsistencias y se prepararon los datos para el análisis posterior.
 
+### Análisis descriptivo de una muestra de 150 ejemplares
 ```{r, echo=FALSE}
+set.seed(42)
 df <- lab |> 
   slice_sample(n = 150, replace = FALSE)
 summary(df)
 ```
+Para realizar un análisis más detallado, se seleccionó aleatoriamente una muestra de 150 ejemplares a partir de los 265 disponibles, asegurando que se conservara la variabilidad de la población original en términos de sexo, procedencia y medidas morfológicas.
 
+En esta muestra, la anchura de la cabeza (KB) presentó valores entre 7,20 y 22,90 mm, con una mediana de 10,90 mm y un promedio de 11,95 mm, ligeramente inferior al promedio de toda la población (12,04 mm) pero similar en su mediana (10,70 mm). La longitud de los élitros (EL) varió entre 15,30 y 27,80 mm, con una mediana de 20,60 mm y una media de 20,72 mm, valores próximos a los observados en todos los ejemplares (mediana 20,70 mm, media 20,91 mm).
+
+En cuanto al sexo, la muestra incluyó 67 hembras y 83 machos, manteniendo una proporción similar a la de la población completa. Respecto a la procedencia, 105 ejemplares eran de Asturias, 17 de Cantabria y 28 de otras zonas, reflejando también la distribución general de los 265 individuos.
+
+Comparando esta muestra con la población total, se observa que las medidas de tendencia central y la dispersión se conservan, lo que confirma que la muestra es representativa y adecuada para los análisis posteriores. La selección aleatoria permite que los resultados de esta muestra reflejen fielmente las características morfológicas y la variabilidad de la especie en el conjunto de la colección.
 ```{r, echo=FALSE}
 summary(df$KB)
 ```
-
+### Análisis de la anchura de la cabeza
 ```{r, echo=FALSE}
   ggplot(df, aes(x = KB)) +
     geom_histogram(binwidth = 0.5, fill = "skyblue",color = "black") +
@@ -75,7 +109,7 @@ ggplot(df, aes(y = KB)) +
        y = "Head Width (KB)")
 ```
 
-## Comparación de la Cabeza entre las Provincias
+### Comparación de la Cabeza entre las Provincias
 Se agrupan los valores de KB en su parte entera para mejor legibilidad de los datos
 ```{r, echo=FALSE}
 lab$KB_int <- floor(lab$KB)
@@ -146,7 +180,7 @@ with(
 ```
 
 
-## Comparar la anchura de la cabeza de las hembras con la de los machos.
+### Comparar la anchura de la cabeza de las hembras con la de los machos.
 ```{r, echo=FALSE}
 breaks <- seq(floor(min(df$KB)), ceiling(max(df$KB)), by = 1)
 
@@ -219,3 +253,10 @@ with(
   )
 )
 ```
+## Conclusiones
+
+Insertar conclusiones
+
+## Anexo: Código en R
+
+Insertar código
