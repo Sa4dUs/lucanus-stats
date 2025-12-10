@@ -303,6 +303,107 @@ with(
   )
 )
 ```
+
+### Correlación entre la anchura de la cabeza y la longitud del élitro
+
+```{r, echo=FALSE}
+df |> dplyr::select(where(is.numeric)) |>  
+  drop_na() |>  # removes rows with NA values
+    cov() |>  # cov matrix
+      round(2) 
+```
+
+La tabla creada anteriormente es lo que se conoce como matriz de covarianzas, la cual ayuda en el estudio de la covarianza entre variables (2 o más). En este caso, es una matriz que relaciona las variables KB y EL.
+
+En este tipo de matrices, las diagonales indican la varianza de cada variable. Por ello se obtiene que:
+- Var(KB) = 14.28
+- Var(EL) = 6.05
+Es decir, KB varía mucho más que EL. Esto es debido a que en la muestra escogida los valores de KB tienen mayor dispersión (varían más) que los valores de EL. 
+
+Por otro lado, el resto de variables indican la covarianza entre la variable fila y la variable columna. En este caso, al solo tener dos variables se obtiene la covarianza de KB y EL:
+- Cov(KB, EL) = 8.20
+Al ser un valor positivo de covarianza se puede afirmar que, cuando una de las variables crece, la otra también lo hace. Es decir, la anchura de la cabeza crece con la longitud de las elitros y viceversa. Al ser un valor relativamente algo, se ve que esta relación es destacable.
+
+El problema cae en que la anchura de la cabeza y la longitud de las elitros se miden en magnitudes diferentes, por ello no se puede determinar el coeficiente de correlación de los datos. Por lo que esta matriz sólo sirve para estudiar la tendencia y el sentido de la relación entre KB y EL.
+
+```{r, echo=FALSE}
+cor(x = df$KB, y = df$EL) # correlation of KB and EL (general)
+```
+
+El coeficiente de correlación se calcula normalizando los datos. En este caso, se calcula mediante la función de R cor(x,y), la cual calcula la correlación de Pearson.
+
+Calculada la correlación entre KB y EL, el valor obtenido es 0.88. Con este valor se puede llegar a la misma conclusión anterior: al ser un valor próximo a 1, se deduce que existe una relación y que esta es positiva (tendencia y sentido hablado anteriormente). Lo que aporta el coeficiente de correlación es la magnitud de la relación y, en este caso, 0.88 es un valor bastante alto, lo cual indica una correlación fuerte entre las variables.
+
+```{r, echo=FALSE}
+ggplot(data = df, aes(x = KB, y = EL)) +
+  geom_point()
+```
+
+## Correlación entre la anchura de la cabeza y la longitud del élitro (para cada sexo)
+```{r, echo=FALSE}
+ggpairs(
+    df |> dplyr::select(KB, EL, SEXO),
+    aes(col = SEXO),
+    diag = list(continuous = wrap("densityDiag")),
+    lower = list(continuous = wrap("points")),
+    upper = list(continuous = wrap("cor"))
+)
+```
+
+## Recta de regresión de la anchura de la cabeza en función de la longitud del élitro (para los sexos donde estén relacionadas)
+Male
+```{r, echo=FALSE}
+male_data <- df |> 
+  filter(SEXO == "macho")
+
+male_cor <- cor(x = male_data$KB, y = male_data$EL) # correlation of KB and EL
+```
+
+```{r, echo=FALSE}
+if (male_cor > 0.5){ # 0.5 = umbral (moderate) to be consider the relation
+  male_data |> 
+    dplyr::select(KB, EL) |> 
+      ggplot(aes(x = EL, y = KB)) +  
+      geom_point() +  
+      geom_smooth(method = lm, se = FALSE, formula = y ~ x) +  
+      theme_bw()
+} else {
+  print("No relation (male)")
+}
+```
+
+```{r, echo=FALSE}
+if (male_cor > 0.5){
+  # lm = linear model (between KB, EL with the data)
+  summary(lm(KB ~ EL, data = male_data))
+}
+```
+
+Female
+```{r, echo=FALSE}
+female_data <- df |> 
+  filter(SEXO == "hembra")
+
+female_cor <- cor(x = female_data$KB, y = female_data$EL)
+```
+
+```{r, echo=FALSE}
+if (female_cor > 0.5){
+  female_data |> 
+    dplyr::select(KB, EL) |> 
+      ggplot(aes(x = EL, y = KB)) +  
+      geom_point() +  
+      geom_smooth(method = lm, se = FALSE, formula = y ~ x) +  
+      theme_bw() 
+} else {
+  print("No relation (female)")
+}
+```
+
+```{r, echo=FALSE}
+if (female_cor > 0.5){
+  summary(lm(KB ~ EL, data = female_data))
+}
 ## Conclusiones
 
 Insertar conclusiones
