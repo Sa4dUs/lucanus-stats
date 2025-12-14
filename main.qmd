@@ -124,6 +124,10 @@ df$KB_cut <- cut(
 )
 ```
 
+En las siguientes gráficas y tablas se va a estudiar cómo se distribuyen las diferentes anchuras de la cabeza de los escarabajos ciervo en relación a la provincia donde viven y si esta influye en la distribución de estos valores.
+
+La siguiente tabla muestra la distribución de frecuencias de la variable KB (anchura de la cabeza) recogidas en la muestra según la provincia a la que pertenecen.
+
 ```{r, echo=FALSE}
 # create frequency table
 freq_table <- table(df$KB_cut, df$PROVINCIA)
@@ -154,6 +158,8 @@ kable(combined,
   kable_paper("hover", full_width = FALSE)
 ```
 
+A continuación, se muestra los histogramas de la misma variable por provincias.
+
 ```{r, echo=FALSE}
 df |>
   ggplot(aes(x = KB)) +
@@ -172,6 +178,11 @@ df |>
   ) +
   facet_wrap(~ PROVINCIA, ncol = 1)
 ```
+
+Se puede observar que la provincia de Asturias contiene la mayor proporción de escarabajos con anchuras de cabeza pequeñas (anchuras de 7 a 9 mm), aunque presenta mayor frecuencia en cantidad de escarabajos en todos los intervalos de anchura estudiados. Esto se debe a que es la provincia con más datos recogidos (105 ejemplares de los 150 de la muestra).
+
+Para visualizar mejor el perfil de las distribuciones por provincia sin que las diferencias observadas se deban a la diferencia en el número de datos se utilizan los gráficos de densidad que se muestran a continuación:
+
 ```{r, echo=FALSE}
 df |>
   ggplot(aes(x = KB)) +
@@ -189,6 +200,16 @@ df |>
   ) +
   facet_wrap(~ PROVINCIA, ncol = 1)
 ```
+
+De esta gráfica, se puede confirmar lo dicho anteriormente que Asturias tiene una frecuencia mayor de escarabajos con una anchura de cabeza pequeña (de 7 a 9 mm) y que esta frecuencia baja aproximadamente de forma uniforme conforme aumenta la anchura de la cabeza.
+
+Por otro lado, se observa como los escarabajos de Cantabria tienen una frecuencia más o menos constante dentro del intervalo de anchuras entre 9 mm y 17 mm, siendo el grupo que contiene mayor frecuencia de escarabajos con anchura de cabeza entre los 15 y 19 mm. 
+
+En cuanto a escarabajos provinientes de otras provincias, se observa que tienen la frecuencia máxima en el intervalo de 9 mm a 11 mm, y es la que más frecuencia de anchuras grandes presenta (estudiando el intervalo entre 21 y 23 mm).
+
+Por tanto se podría concluir que los escarabajos de Asturias presentan una anchura de cabeza de entre 7 a 9 mm en su mayoría y los escarabajos de Cantabria entre 9 y 17 mm. Los escarabajos de otras provincias presentan en su mayoría anchuras de entre 9 y 11 mm o entre 21 y 23 mm, pero para concretar estos datos tendría que verse de qué zona/ procedencia son esos datos (posible heterogeneidad de este grupo de datos).
+
+Para comparar mejor la distribución de la variable en las tres provincias se usan diagramas de cajas paralelos.
 
 ```{r, echo=FALSE}
 df |>
@@ -219,6 +240,14 @@ ggplot(df, aes(x = PROVINCIA, y = KB, fill = PROVINCIA)) +
   )
 
 ```
+
+De estas gráficas se comprueba lo visto anteriormente: la población de escarabajos asturiana se concentra en los valores bajos de anchura de cabeza, mientras que en los escarabajos de Cantabria se concentra por el intervalo central de los datos recogidos. También se observa que la concentración de datos de las otras provincias se encuentra alrededor del valor 10 de KB, pero presenta una alta dispersión de los datos.
+
+De las tres provincias, Cantabria es la que menos dispersión de los datos presenta; mientras que los otros dos grupos presentan una alta dispersión de los datos (puede darse por los pocos datos que existen de este grupo).
+
+En cuanto a las medianas de los tres grupos, se puede observar como no están centradas en la caja de la gráfica, indicando que los datos no tienen una distribución simétrica. Se observa que la mediana de las muestras de Asturias y otras provincias se encuentra por debajo del centro de la caja, indicando un asimetría positiva, lo cual coincide con la observación anterior de que estos valores se concentran en valores bajos de la variable KB. Por otro lado, la mediana del grupo de Cantabria se encuentra por encima indicando una menor asimetría positiva, es decir, mayor dispersión en los valores bajos y mayor concentración de valores en la parte alta de la escala. 
+
+Por último, se presentan los estadísticos descriptivos de la relación KB-PROVINCIA de la muestra estudiada:
 
 ```{r, echo=FALSE}
 with(
@@ -315,28 +344,36 @@ df |> dplyr::select(where(is.numeric)) |>
       round(2) 
 ```
 
-La tabla creada anteriormente es lo que se conoce como matriz de covarianzas, la cual ayuda en el estudio de la covarianza entre variables (2 o más). En este caso, es una matriz que relaciona las variables KB y EL.
+La tabla creada anteriormente es lo que se conoce como matriz de varianzas-covarianzas, la cual ayuda en el estudio de la covarianza entre variables (2 o más). En este caso, es una matriz que relaciona las variables KB y EL.
 
-En este tipo de matrices, las diagonales indican la varianza de cada variable. Por ello se obtiene que la Var(KB) = 14.28 y que la Var(EL) = 6.05. Es decir, KB varía mucho más que EL. Esto es debido a que en la muestra escogida los valores de KB tienen mayor dispersión (varían más) que los valores de EL. 
+En este tipo de matrices, la diagonal recoge la varianza de cada variable. Por ello se obtiene que la Var(KB) = 14.28 y que la Var(EL) = 6.05. Es decir, KB varía mucho más que EL. Esto es debido a que en la muestra escogida los valores de KB tienen mayor dispersión (varían más) que los valores de EL. 
 
-Por otro lado, el resto de variables indican la covarianza entre la variable fila y la variable columna. En este caso, al solo tener dos variables se obtiene la covarianza de KB y EL es 8.20.
+Por otro lado, el resto de entradas indican la covarianza entre la variable fila y la variable columna. En este caso, al solo tener dos variables se obtiene la covarianza de KB y EL es 8.20.
 
-Al ser un valor positivo de covarianza se puede afirmar que, cuando una de las variables crece, la otra también lo hace. Es decir, la anchura de la cabeza crece con la longitud de las elitros y viceversa.
+Al ser un valor positivo de covarianza se puede afirmar que, cuando una de las variables crece, la otra también lo hace. Es decir, la anchura de la cabeza crece con la longitud de las élitros y viceversa.
 
-El problema cae en que la anchura de la cabeza y la longitud de las elitros se miden en magnitudes diferentes, por ello no se puede determinar el coeficiente de correlación de los datos. Por lo que esta matriz sólo sirve para estudiar la tendencia y el sentido de la relación entre KB y EL.
+Aunque ambas variables se miden en la misma escala (milímetros), sus varianzas son distintas, lo que puede llevar a errores de interpretación de la magnitud de la relación lineal entre ambas. La matriz de varianzas-covarianzas sólo sirve para estudiar la tendencia y el sentido de la relación entre KB y EL. Por ello se va a utilizar el coeficiente de correlación para estudiar la intensidad de la misma.
 
 ```{r, echo=FALSE}
 cor(x = df$KB, y = df$EL) # correlation of KB and EL (general)
 ```
 
-El coeficiente de correlación se calcula normalizando los datos. En este caso, se calcula mediante la función de R cor(x,y), la cual calcula la correlación de Pearson.
+El coeficiente de correlación se calcula normalizando los datos. En este caso, se calcula mediante la función de R `cor(x,y)`, la cual calcula la correlación de Pearson.
 
 Calculada la correlación entre KB y EL, el valor obtenido es 0.88. Con este valor se puede llegar a la misma conclusión anterior: al ser un valor próximo a 1, se deduce que existe una relación y que esta es positiva (tendencia y sentido hablado anteriormente). Lo que aporta el coeficiente de correlación es la magnitud de la relación y, en este caso, 0.88 es un valor bastante alto (recordemos que está entre -1 y 1), lo cual indica una correlación fuerte entre las variables.
+
+Este análisis hecho de forma cuantitativa se puede contrastar con la siguiente gráfica de dispersión:
 
 ```{r, echo=FALSE}
 ggplot(data = df, aes(x = KB, y = EL)) +
   geom_point()
 ```
+
+En ella se puede observar lo afirmado anteriormente de cómo las dos variables tienen una relación positiva, ya que se puede apreciar como conforme crece la variable KB (eje x) también lo hace el valor de la variable EL (eje y).
+
+Se pueden distinguir dos concentraciones de puntos: una concentración pequeña en el intervalo [0, 10] de la variable KB y una concentración más dispersada que inicia aproximadamente en KB = 8. Esto puede deberse a que la relación de las variables también está condicionada por otra característica no numérica de los datos que se tienen de los escarabajos ciervo (a continuación, se verá que esta variable es el sexo).
+
+Estudiando la distribución de los puntos, se nota que el grupo pequeño está más concentrado que el segundo grupo, lo cual puede deberse a que en el primer grupo la relación KB-EL es más fuerte que en el segundo grupo.
 
 ### Correlación entre la anchura de la cabeza y la longitud del élitro (para cada sexo)
 ```{r, echo=FALSE}
