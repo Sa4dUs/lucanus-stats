@@ -18,6 +18,7 @@ format:
     include-in-header: _extensions/tocdots/tocdots.tex
     toc: true
     toc-title: "Índice"
+    prefer-html: true 
     geometry:
       - margin=25mm
 execute:
@@ -159,8 +160,8 @@ combined <- rbind(combined, Total = colSums(freq_table))
 # create HTML table with kableExtra
 kable(combined, 
       caption = "Frequency and Percentage of KB by Province", 
-      align = "c", 
-      format = "html") |>
+      align = "c"
+    ) |>
   kable_styling(full_width = FALSE, 
                 bootstrap_options = c("striped", "hover", "condensed", "responsive")) |>
   row_spec(0, bold = TRUE) |>  # header in bold
@@ -275,7 +276,7 @@ with(
 ### Comparar la anchura de la cabeza de las hembras con la de los machos.
 
 ```{r, echo=FALSE}
-breaks <- seq(floor(min(df$KB)), ceiling(max(df$KB)), by = 1)
+breaks <- seq(floor(min(df$KB)), ceiling(max(df$KB)), by = 2)
 
 df_table <- df |> 
   mutate(KB_CLASS = cut(KB, breaks = breaks, include.lowest = TRUE))
@@ -295,8 +296,8 @@ combined <- rbind(combined, Total = c(colSums(freq_table), sum(freq_table)))
 # Crear tabla con kable y kableExtra
 kable(combined, 
       caption = "Frequency and Percentage of Head Width by Sex (1-unit bins)", 
-      align = "c", 
-      format = "html") |> 
+      align = "c"
+    ) |> 
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) |> 
   row_spec(0, bold = TRUE) |>
   row_spec(nrow(combined), bold = TRUE, background = "#F5F5F5") |> # Total gris claro
