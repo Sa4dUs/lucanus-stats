@@ -262,6 +262,7 @@ with(
 
 
 ### Comparar la anchura de la cabeza de las hembras con la de los machos.
+
 ```{r, echo=FALSE}
 breaks <- seq(floor(min(df$KB)), ceiling(max(df$KB)), by = 1)
 
@@ -302,7 +303,7 @@ ggplot(df, aes(x = SEXO, y = KB, fill = SEXO)) +
        y = "Head Width (KB)") +
   theme_minimal()
 ```
-
+Este análisis revela que el sexo es un factor determinante en la anchura de la cabeza de la especie Lucanus cervus. Los datos muestran que las hembras presentan cabezas más estrechas y homogéneas, con valores concentrados principalmente entre 7 y 10 mm, representando el 97% de los ejemplares de este sexo. En cambio, los machos presentan cabezas considerablemente más anchas, con un rango de 9 a 23 mm y mayor dispersión, concentrándose la mayor parte de los individuos entre 11 y 16 mm, aunque existiendo ejemplares extremos con anchuras superiores a 20 mm.
 ```{r, echo=FALSE}
 ggplot(df, aes(x = SEXO, y = KB, fill = SEXO)) +
   geom_violin(color = "black") +
@@ -313,7 +314,7 @@ ggplot(df, aes(x = SEXO, y = KB, fill = SEXO)) +
        y = "Head Width (KB)") +
   theme_minimal()
 ```
-
+Además de la diferencia evidente en los rangos de KB, los gráficos de caja y violín muestran claramente que los machos no solo tienen una mayor anchura promedio, sino también una mayor dispersión y presencia de valores atípicos. La mayoría de las hembras se concentran en un rango estrecho, lo que indica una menor variabilidad morfológica dentro de este sexo. Por el contrario, los machos presentan una distribución más amplia y heterogénea, con algunos individuos que alcanzan anchuras de cabeza superiores a 20 mm, lo que refleja la variabilidad individual dentro de la población masculina.
 ```{r, echo=FALSE}
 ggplot(df, aes(x = KB, fill = SEXO)) +
   geom_histogram(alpha = 0.6, position = "identity", binwidth = 0.5, color = "black") +
@@ -323,7 +324,7 @@ ggplot(df, aes(x = KB, fill = SEXO)) +
        y = "Frequency") +
   theme_minimal()
 ```
-
+Los estadísticos descriptivos confirman esta diferencia: la media de las hembras es 8.77 mm (mediana 8.85 mm) frente a 14.51 mm (mediana 14.40 mm) en los machos. La desviación estándar y el rango intercuartílico también muestran una mayor variabilidad en los machos (Std.Dev = 3.23, IQR = 4.35) que en las hembras (Std.Dev = 0.86, IQR = 1.35), lo que indica que los machos presentan una mayor heterogeneidad en tamaño de cabeza. La asimetría de la distribución de los machos es positiva (skewness = 0.61), mientras que la de las hembras es casi simétrica (skewness = 0.10), lo que concuerda con la presencia de valores extremos en los machos.
 ```{r, echo=FALSE}
 with(
   df, 
