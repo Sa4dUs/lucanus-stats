@@ -272,6 +272,7 @@ with(
 )
 ```
 
+A partir de aquí se puede comprobar que todo lo analizado anteriormente de forma cualitativa, como las asimetrías positivas (indicado con Skewness), viene descrito por su estadístico correspondiente en el estudio general. Se observa la alta dispersión de los valores de otras provincias y cómo Asturias tiene los valores más pequeños de media y quartiles.
 
 ### Comparar la anchura de la cabeza de las hembras con la de los machos.
 
