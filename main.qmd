@@ -166,7 +166,7 @@ kable(combined,
                 bootstrap_options = c("striped", "hover", "condensed", "responsive")) |>
   row_spec(0, bold = TRUE) |>  # header in bold
   row_spec(nrow(combined), bold = TRUE, background = "#F5F5F5") |>
-  column_spec(1:ncol(combined), border_right = TRUE, width = "50mm") |> 
+  column_spec(1:ncol(combined), border_right = TRUE, width = "20mm") |> 
   kable_paper("hover", full_width = FALSE)
 ```
 
@@ -302,7 +302,7 @@ kable(combined,
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) |> 
   row_spec(0, bold = TRUE) |>
   row_spec(nrow(combined), bold = TRUE, background = "#F5F5F5") |> # Total gris claro
-  column_spec(1:3, border_right = TRUE, width = "50mm") |> 
+  column_spec(1:3, border_right = TRUE, width = "20mm") |> 
   kable_paper("hover", full_width = FALSE)
 ```
 
