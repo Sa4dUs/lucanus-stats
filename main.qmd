@@ -95,7 +95,12 @@ Comparando esta muestra con la población total, se observa que las medidas de t
 ```{r, echo=FALSE}
 summary(df$KB)
 ```
+
 ### Análisis de la anchura de la cabeza
+Las gráficas muestran la distribución de la anchura de la cabeza (en KB) mediante un histograma y un boxplot, lo que permite evaluar la forma de la distribución y su dispersión.
+
+El histograma muestra una clara concentración de observaciones en el rango aproximado de 8 a 12 KB, donde se alcanza la mayor frecuencia. Esto indica que la mayor parte de la muestra se agrupa en valores bajos-medios, con un comportamiento central relativamente estable.
+
 ```{r, echo=FALSE}
   ggplot(df, aes(x = KB)) +
     geom_histogram(binwidth = 0.5, fill = "skyblue",color = "black") +
@@ -103,6 +108,10 @@ summary(df$KB)
          x = "Head Width (KB)",
          y = "Frequency")
 ```
+
+La distribución no es simétrica. Se observa una mayor densidad en los valores bajos y una extensión progresiva hacia valores altos, consistente con una asimetría positiva. Los valores elevados, menos frecuentes, contribuyen de forma significativa a la dispersión total. Dado que los datos no están estratificados por sexo, la mezcla de subpoblaciones con medias distintas incrementa la variabilidad observada.
+
+En el boxplot, la mediana se sitúa ligeramente por debajo del centro del rango intercuartílico. El IQR es moderado, lo que indica que el 50 % central de los datos está relativamente concentrado. En contraste, los bigotes son largos, especialmente hacia valores altos, lo que muestra que la mayor parte de la dispersión procede de las colas y no del núcleo de la distribución. También se observan valores extremos superiores, coherentes con la cola derecha del histograma.
 
 ```{r, echo=FALSE}
 ggplot(df, aes(x = as.factor("1"), y = KB)) +
@@ -112,6 +121,8 @@ ggplot(df, aes(x = as.factor("1"), y = KB)) +
        y = "Head Width (KB)") +
   theme(axis.text.x = element_blank())
 ```
+
+En conjunto, la anchura de la cabeza presenta una distribución asimétrica con una dispersión global elevada, dominada por valores altos poco frecuentes. Este patrón es consistente con una población heterogénea analizada sin separación por sexo; una estratificación posterior permitiría reducir la variabilidad residual y afinar la interpretación de las medidas descriptivas.
 
 ### Comparación de la Cabeza entre las Provincias
 ```{r, echo=FALSE}
