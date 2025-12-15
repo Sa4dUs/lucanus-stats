@@ -390,6 +390,10 @@ Se pueden distinguir dos concentraciones de puntos: una concentración pequeña 
 Estudiando la distribución de los puntos, se nota que el grupo pequeño está más concentrado que el segundo grupo, lo cual puede deberse a que en el primer grupo la relación KB-EL es más fuerte que en el segundo grupo.
 
 ### Correlación entre la anchura de la cabeza y la longitud del élitro (para cada sexo)
+El gráfico muestra la relación entre la anchura de la cabeza (KB) y la longitud del élitro (EL) separada por sexo. Se observan conjuntos claramente diferenciados: los machos presentan valores mayores en ambas variables que las hembras. La correlación entre KB y EL es fuerte y positiva para ambos sexos (hembra: 0.946, macho: 0.948), indicando que a mayor anchura de cabeza, mayor longitud de élitro. Los diagramas de caja y los histogramas confirman que las hembras tienen medidas menores y rangos más estrechos que los machos. La dispersión de los puntos también refleja esta tendencia positiva, consistente en ambos grupos.
+
+Estudiaremos la gráfica de regresión lineal con más detalle, enfocándonos en cada uno de los grupos en el siguiente punto.
+
 ```{r, echo=FALSE}
 ggpairs(
     df |> dplyr::select(KB, EL, SEXO),
