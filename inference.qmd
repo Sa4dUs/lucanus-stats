@@ -1,0 +1,46 @@
+---
+title: "inference"
+format: html
+---
+
+```{r, echo=FALSE}
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(psych)
+library(summarytools)
+library(knitr)
+library(kableExtra)
+library(MASS)
+library(GGally)
+```
+
+```{r, echo=FALSE}
+df <- read.table(file = "data/lucanus.csv", header = TRUE, fill = TRUE)
+
+df <- df |>
+  mutate(
+      KB = as.numeric(gsub(",", ".", trimws(KB))),
+      EL = as.numeric(gsub(",", ".", trimws(EL))),
+      SEXO = as.factor(trimws(SEXO)),
+      PROVINCIA = ifelse(trimws(PROVINCIA) == "", "Otras", trimws(PROVINCIA)),
+      PROVINCIA = as.factor(trimws(PROVINCIA))
+  )
+
+summary(df)
+```
+
+# 1
+
+# 2
+```{r, echo=FALSE}
+t.test(df$KB ~ df$SEXO, data = df, var.equal = TRUE)
+```
+
+```{r, echo=FALSE}
+t.test(df$EL ~ df$SEXO, data = df, var.equal = TRUE)
+```
+
+# 3
+
+# 4
