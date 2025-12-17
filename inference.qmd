@@ -30,9 +30,15 @@ df <- df |>
 summary(df)
 ```
 
-# 1
+# 1. ¿Entre qué valores fluctúa el promedio de la anchura de la cabeza y de la longitud de los élitros del Lacanus Cervus?
+```{r, echo=FALSE}
+t.test(df$KB, data = df, var.equal = TRUE)
+```
+```{r, echo=FALSE}
+t.test(df$EL, data = df, var.equal = TRUE)
+```
 
-# 2
+# 2. ¿Existe diferencia estadísticamente significativa entre el promedio de la anchura de la cabeza y la longitud de los élitros según sexo?
 ```{r, echo=FALSE}
 t.test(df$KB ~ df$SEXO, data = df, var.equal = TRUE)
 ```
@@ -41,6 +47,20 @@ t.test(df$KB ~ df$SEXO, data = df, var.equal = TRUE)
 t.test(df$EL ~ df$SEXO, data = df, var.equal = TRUE)
 ```
 
-# 3
+# 3. ¿Existe diferencia estadísticamente significativa entre el promedio de la anchura de la cabeza y la longitud de los élitros según si habitan en Cantabria o en Asturias?
+```{r, echo=FALSE}
+subset(df, PROVINCIA %in% c("Cantabria", "Asturias"))
+```
 
-# 4
+```{r, echo=FALSE}
+df_sub <- subset(df, PROVINCIA %in% c("Cantabria", "Asturias"))
+```
+
+```{r, echo=FALSE}
+t.test(df_sub$KB ~ df_sub$PROVINCIA, data = df_sub, var.equal = TRUE)
+```
+
+```{r, echo=FALSE}
+t.test(df_sub$EL ~ df_sub$PROVINCIA, data = df_sub, var.equal = TRUE)
+```
+# 4. Suponiendo que la muestra es representativa de la población, ¿los hábitats son igual de numerosos en Cantabria y Asturias?, ¿y en términos de sexo?
