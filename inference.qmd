@@ -63,4 +63,10 @@ t.test(df_sub$KB ~ df_sub$PROVINCIA, data = df_sub, var.equal = TRUE)
 ```{r, echo=FALSE}
 t.test(df_sub$EL ~ df_sub$PROVINCIA, data = df_sub, var.equal = TRUE)
 ```
+
+```{r, echo=FALSE}
+anova_mod <- aov(KB ~ PROVINCIA, data = df)
+summary(anova_mod)
+```
 # 4. Suponiendo que la muestra es representativa de la población, ¿los hábitats son igual de numerosos en Cantabria y Asturias?, ¿y en términos de sexo?
+
