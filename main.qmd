@@ -419,7 +419,7 @@ if (male_cor > 0.5){ # 0.5 = umbral (moderate) to be consider the relation
     dplyr::select(KB, EL) |> 
       ggplot(aes(x = EL, y = KB)) +  
       geom_point() +  
-      geom_smooth(method = lm, se = FALSE, formula = y ~ x) +  
+      geom_smooth(method = lm, se = FALSE, formula = y ~ x) + 
       theme_bw()
 } else {
   print("No relation (male)")
@@ -429,7 +429,8 @@ if (male_cor > 0.5){ # 0.5 = umbral (moderate) to be consider the relation
 ```{r, echo=FALSE}
 if (male_cor > 0.5){
   # lm = linear model (between KB, EL with the data)
-  summary(lm(KB ~ EL, data = male_data))
+  par(mfrow = c(2, 2)) # creates the grid to put the graphics
+  plot(lm(KB ~ EL, data = male_data))
 }
 ```
 
@@ -456,7 +457,8 @@ if (female_cor > 0.5){
 
 ```{r, echo=FALSE}
 if (female_cor > 0.5){
-  summary(lm(KB ~ EL, data = female_data))
+  par(mfrow = c(2, 2)) 
+  plot(lm(KB ~ EL, data = female_data))
 }
 ```
 
