@@ -412,7 +412,7 @@ male_data <- df |>
 
 male_cor <- cor(x = male_data$KB, y = male_data$EL) # correlation of KB and EL
 ```
-
+En los machos, la correlación entre la anchura de la cabeza (KB) y la longitud del élitro (EL) fue muy alta, aproximadamente r ≈ 0.948, lo que indica una relación lineal positiva muy marcada. Esto significa que, en general, a medida que aumenta la longitud del élitro, también tiende a aumentar la anchura de la cabeza, y el modelo de regresión lineal sugiere que por cada unidad de incremento en EL se espera un aumento proporcional en KB. La gráfica de dispersión con la línea de regresión ajustada confirma esta tendencia, mostrando que la mayoría de los puntos se distribuye de manera homogénea alrededor de la recta, aunque con algo de dispersión en los valores más altos de EL.
 ```{r, echo=FALSE}
 if (male_cor > 0.5){ # 0.5 = umbral (moderate) to be consider the relation
   male_data |> 
@@ -433,6 +433,7 @@ if (male_cor > 0.5){
   plot(lm(KB ~ EL, data = male_data))
 }
 ```
+Al analizar las gráficas de diagnóstico, se observa que los residuos frente a los valores ajustados no presentan patrones sistemáticos, lo que indica que la homocedasticidad (la varianza de los errores es constante) se cumple de manera razonable. El gráfico normal Q-Q muestra que los residuos se alinean aproximadamente sobre la línea diagonal, lo que sugiere que la suposición de normalidad de los errores es aceptable. La gráfica Scale-Location refuerza esta observación, mostrando que la dispersión de los residuos estandarizados se mantiene relativamente constante a lo largo de los valores ajustados (esto se observa porque la línea roja es bastante horizontal). Finalmente, el gráfico de residuos frente a leverage no evidencia puntos influyentes extremos, por lo que no hay valores atípicos que afecten de manera crítica al modelo (si hubiera tendríamos puntos dentro del area generada por las líneas punteadas). En conjunto, estos análisis indican que el modelo de regresión lineal describe muy bien la relación entre la longitud del élitro y la anchura de la cabeza en machos, y que los supuestos básicos del modelo se cumplen de manera satisfactoria.
 
 Female
 ```{r, echo=FALSE}
@@ -441,7 +442,7 @@ female_data <- df |>
 
 female_cor <- cor(x = female_data$KB, y = female_data$EL)
 ```
-
+En las hembras, la relación entre KB y EL también es muy fuerte, con una correlación aproximada de r ≈ 0.946, lo que indica que hembras con élitros más largos tienden a tener cabezas más anchas. La dispersión de los datos es algo menor que en los machos, lo que refleja una población más homogénea, y la línea de regresión muestra un patrón lineal claro y consistente. Esto sugiere que la variabilidad en KB está bien explicada por la longitud del élitro y que el modelo lineal simple es adecuado para este grupo.
 ```{r, echo=FALSE}
 if (female_cor > 0.5){
   female_data |> 
@@ -461,11 +462,137 @@ if (female_cor > 0.5){
   plot(lm(KB ~ EL, data = female_data))
 }
 ```
+Al observar las gráficas de diagnóstico, los residuos frente a los valores ajustados muestran un patrón aleatorio sin tendencias sistemáticas, lo que indica que la homocedasticidad se mantiene y que el modelo no presenta problemas de varianza no constante. En el gráfico normal Q-Q, los puntos se aproximan a la línea diagonal, lo que sugiere que los residuos siguen aproximadamente una distribución normal. La gráfica Scale-Location muestra que la dispersión de los residuos estandarizados se mantiene constante, reforzando la validez del modelo. Además, el gráfico de residuos frente a leverage no evidencia puntos con influencia extrema, lo que indica que no existen valores atípicos que comprometan la fiabilidad de la regresión. En conjunto, el modelo lineal para las hembras representa de manera adecuada la relación entre la longitud del élitro y la anchura de la cabeza, y todos los diagnósticos apoyan la validez de los supuestos subyacentes.
+
+El análisis de la relación entre la anchura de la cabeza (KB) y la longitud del élitro (EL) muestra resultados muy similares en machos y hembras. En ambos sexos, la correlación es extremadamente alta (r ≈ 0.948 en machos y r ≈ 0.946 en hembras), indicando que a medida que aumenta la longitud del élitro, también tiende a aumentar la anchura de la cabeza. Las gráficas de dispersión con las líneas de regresión ajustadas muestran un patrón lineal claro y consistente, y las gráficas de diagnóstico confirman que los supuestos de la regresión lineal —homocedasticidad, normalidad de los residuos y ausencia de valores influyentes extremos— se cumplen de manera satisfactoria en ambos casos. En conclusión podemos afirmar, esto sugiere que el modelo lineal describe de manera adecuada la relación entre KB y EL tanto en machos como en hembras, mostrando un patrón de crecimiento muy comparable entre los dos sexos.
 
 ## Conclusiones
 
-Insertar conclusiones
+El análisis biométrico realizado sobre Lucanus cervus permitió obtener varias conclusiones relevantes tanto desde el punto de vista morfológico como ecológico.
+
+Se confirmó que existe un marcado dimorfismo sexual en la especie. Los machos presentan una anchura de cabeza significativamente mayor que las hembras, con una mayor dispersión y presencia de valores extremos, mientras que las hembras muestran cabezas más estrechas y homogéneas. 
+
+La anchura de la cabeza varía según la provincia de origen. Los ejemplares de Asturias tienden a concentrarse en rangos de anchura más bajos, Cantabria presenta un rango intermedio con menor dispersión y las otras provincias muestran mayor heterogeneidad. Esto sugiere que el hábitat y las condiciones locales podrían influir en el desarrollo morfológico de los individuos.
+
+ Se encontró una correlación fuerte y positiva entre la anchura de la cabeza y la longitud del élitro, tanto en machos como en hembras (r ≈ 0.946–0.948). Los modelos de regresión lineal ajustados confirman que la longitud del élitro es un buen predictor de la anchura de la cabeza, cumpliendo los supuestos de normalidad, homocedasticidad y ausencia de valores influyentes.
+
+La selección aleatoria de 150 ejemplares de un total de 265 permitió obtener resultados consistentes con la población general. Las medidas de tendencia central, dispersión y asimetría observadas en la muestra reflejan fielmente la variabilidad de la población de Lucanus cervus.
+
+En decir, estos hallazgos aportan información valiosa sobre la morfología y la variabilidad de la especie, destacando la importancia de considerar el sexo y la procedencia geográfica al analizar las características biométricas.
 
 ## Anexo: Código en R
 
-Insertar código
+
+### Carga y limpieza de datos
+lab <- read.table(file = "data/lucanus.csv", header = TRUE, fill = TRUE)
+lab <- lab |>
+  mutate(
+      KB = as.numeric(gsub(",", ".", trimws(KB))),
+      EL = as.numeric(gsub(",", ".", trimws(EL))),
+      SEXO = as.factor(trimws(SEXO)),
+      PROVINCIA = ifelse(trimws(PROVINCIA) == "", "Otras", trimws(PROVINCIA)),
+      PROVINCIA = as.factor(trimws(PROVINCIA))
+  )
+
+###  Selección aleatoria de la muestra
+set.seed(42)
+df <- lab |> slice_sample(n = 150, replace = FALSE)
+
+###  Estadísticos descriptivos
+summary(lab)
+summary(df)
+with(df, stby(KB, PROVINCIA, descr))
+with(df, stby(KB, SEXO, descr))
+
+###  Histograma y boxplot de KB
+ggplot(df, aes(x = KB)) +
+  geom_histogram(binwidth = 0.5, fill = "skyblue", color = "black") +
+  labs(title = "Head Width Distribution", x = "Head Width (KB)", y = "Frequency")
+
+ggplot(df, aes(x = as.factor("1"), y = KB)) +
+  geom_boxplot(fill = "skyblue", color = "black", width = 0.3) +
+  labs(title = "Boxplot de Head Width", x = "", y = "Head Width (KB)") +
+  theme(axis.text.x = element_blank())
+
+###  Distribución de KB por provincia
+df$KB_cut <- cut(df$KB, breaks = seq(7,25,by=2), include.lowest = TRUE, right = FALSE)
+freq_table <- table(df$KB_cut, df$PROVINCIA)
+percent_table <- round(prop.table(freq_table, margin = 2) * 100, 1)
+combined <- matrix(paste0(freq_table, " (", percent_table, "%)"), nrow = nrow(freq_table), dimnames = dimnames(freq_table))
+combined <- rbind(combined, Total = colSums(freq_table))
+kable(combined, caption = "Frequency and Percentage of KB by Province", align = "c") |>
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+
+###  Histogramas y densidad por provincia
+ggplot(df, aes(x = KB)) +
+  geom_histogram(color = "black", alpha = 0.7, breaks = seq(7,25,by=2), fill = "skyblue") +
+  facet_wrap(~ PROVINCIA, ncol = 1) +
+  labs(x = "KB", y = "Frequency", title = "KB distribution by province") +
+  theme_bw()
+
+ggplot(df, aes(x = KB)) +
+  geom_density(color = "black", alpha = 0.7, fill = "skyblue") +
+  facet_wrap(~ PROVINCIA, ncol = 1) +
+  labs(x = "KB", y = "Frequency", title = "KB density plot by province") +
+  theme_bw()
+
+###  Boxplot y violin plot por provincia
+ggplot(df, aes(x = PROVINCIA, y = KB, fill = PROVINCIA)) +
+  geom_boxplot(outlier.shape = NA, alpha = 0.6) +
+  geom_jitter(width = 0.2, size = 2, alpha = 0.3) +
+  labs(title = "Comparison of head width between provinces", x = "Province", y = "Head Width (KB)")
+
+ggplot(df, aes(x = PROVINCIA, y = KB, fill = PROVINCIA)) +
+  geom_violin(trim = FALSE, color = "black", alpha = 0.6) + 
+  geom_jitter(width = 0.15, size = 1.5, alpha = 0.3, color = "black") +
+  labs(title = "Violin Plot of KB by Province", x = "Province", y = "Head Width (KB)")
+
+###  Comparación por sexo
+breaks <- seq(floor(min(df$KB)), ceiling(max(df$KB)), by = 2)
+df_table <- df |> mutate(KB_CLASS = cut(KB, breaks = breaks, include.lowest = TRUE))
+freq_table <- table(df_table$KB_CLASS, df$SEXO)
+percent_table <- round(prop.table(freq_table, margin = 2) * 100, 1)
+combined <- matrix(paste0(freq_table, " (", percent_table, "%)"), nrow = nrow(freq_table), dimnames = dimnames(freq_table))
+combined <- rbind(combined, Total = c(colSums(freq_table), sum(freq_table)))
+kable(combined, caption = "Frequency and Percentage of Head Width by Sex (1-unit bins)", align = "c") |>
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+
+ggplot(df, aes(x = SEXO, y = KB, fill = SEXO)) +
+  geom_boxplot(color = "black") +
+  geom_jitter(aes(col = SEXO), alpha = 0.2) +
+  scale_fill_manual(values = c("pink", "skyblue")) +
+  labs(title = "Comparison of Head Width by Sex", x = "Sex", y = "Head Width (KB)")
+
+ggplot(df, aes(x = KB, fill = SEXO)) +
+  geom_histogram(alpha = 0.6, position = "identity", binwidth = 0.5, color = "black") +
+  scale_fill_manual(values = c("pink", "skyblue")) +
+  labs(title = "Head Width Distribution by Sex", x = "Head Width (KB)", y = "Frequency") +
+  theme_minimal()
+
+###  Matriz de covarianza y correlación
+df |> dplyr::select(where(is.numeric)) |> drop_na() |> cov() |> round(2)
+cor(df$KB, df$EL)
+
+###  Correlación y regresión por sexo
+male_data <- df |> filter(SEXO == "macho")
+female_data <- df |> filter(SEXO == "hembra")
+male_cor <- cor(male_data$KB, male_data$EL)
+female_cor <- cor(female_data$KB, female_data$EL)
+
+if (male_cor > 0.5) {
+  ggplot(male_data, aes(x = EL, y = KB)) + geom_point() + geom_smooth(method = lm, se = FALSE) + theme_bw()
+  par(mfrow = c(2, 2))
+  plot(lm(KB ~ EL, data = male_data))
+}
+
+if (female_cor > 0.5) {
+  ggplot(female_data, aes(x = EL, y = KB)) + geom_point() + geom_smooth(method = lm, se = FALSE) + theme_bw()
+  par(mfrow = c(2, 2))
+  plot(lm(KB ~ EL, data = female_data))
+}
+
+###  Matriz de pares y correlaciones
+ggpairs(df |> select(KB, EL, SEXO), aes(col = SEXO),
+        diag = list(continuous = wrap("densityDiag")),
+        lower = list(continuous = wrap("points")),
+        upper = list(continuous = wrap("cor")))
