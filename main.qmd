@@ -79,6 +79,7 @@ summary(lab)
 
 Se comenzó con el procesamiento y limpieza de los datos de los 265 ejemplares de Lucanus cervus. Para cada individuo se registraron la anchura de la cabeza (KB), la longitud de los élitros (EL), el sexo y la provincia de procedencia (Asturias, Cantabria u otras). Se verificaron los formatos de las variables, se corrigieron inconsistencias y se prepararon los datos para el análisis posterior.
 
+\newpage
 # Análisis Estadístico
 ```{r, echo=FALSE}
 set.seed(42)
@@ -150,7 +151,8 @@ kable(combined,
       caption = "Frequency and Percentage of Head Width by Sex (1-unit bins)", 
       align = "c"
     ) |> 
-  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) |> 
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover",
+                                                          "condensed", "responsive")) |> 
   row_spec(0, bold = TRUE) |>
   row_spec(nrow(combined), bold = TRUE, background = "#F5F5F5") |> # Total gris claro
   column_spec(1:3, border_right = TRUE, width = "20mm") |> 
@@ -480,118 +482,7 @@ La selección aleatoria de 150 ejemplares de un total de 265 permitió obtener r
 
 En decir, estos hallazgos aportan información valiosa sobre la morfología y la variabilidad de la especie, destacando la importancia de considerar el sexo y la procedencia geográfica al analizar las características biométricas.
 
-# Anexo: Código en R
-
-## Carga y limpieza de datos
-lab <- read.table(file = "data/lucanus.csv", header = TRUE, fill = TRUE)
-lab <- lab |>
-  mutate(
-      KB = as.numeric(gsub(",", ".", trimws(KB))),
-      EL = as.numeric(gsub(",", ".", trimws(EL))),
-      SEXO = as.factor(trimws(SEXO)),
-      PROVINCIA = ifelse(trimws(PROVINCIA) == "", "Otras", trimws(PROVINCIA)),
-      PROVINCIA = as.factor(trimws(PROVINCIA))
-  )
-
-##  Selección aleatoria de la muestra
-set.seed(42)
-df <- lab |> slice_sample(n = 150, replace = FALSE)
-
-##  Estadísticos descriptivos
-summary(lab)
-summary(df)
-with(df, stby(KB, PROVINCIA, descr))
-with(df, stby(KB, SEXO, descr))
-
-##  Histograma y boxplot de KB
-ggplot(df, aes(x = KB)) +
-  geom_histogram(binwidth = 0.5, fill = "skyblue", color = "black") +
-  labs(title = "Head Width Distribution", x = "Head Width (KB)", y = "Frequency")
-
-ggplot(df, aes(x = as.factor("1"), y = KB)) +
-  geom_boxplot(fill = "skyblue", color = "black", width = 0.3) +
-  labs(title = "Boxplot de Head Width", x = "", y = "Head Width (KB)") +
-  theme(axis.text.x = element_blank())
-
-##  Distribución de KB por provincia
-df$KB_cut <- cut(df$KB, breaks = seq(7,25,by=2), include.lowest = TRUE, right = FALSE)
-freq_table <- table(df$KB_cut, df$PROVINCIA)
-percent_table <- round(prop.table(freq_table, margin = 2) * 100, 1)
-combined <- matrix(paste0(freq_table, " (", percent_table, "%)"), nrow = nrow(freq_table), dimnames = dimnames(freq_table))
-combined <- rbind(combined, Total = colSums(freq_table))
-kable(combined, caption = "Frequency and Percentage of KB by Province", align = "c") |>
-  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive"))
-
-##  Histogramas y densidad por provincia
-ggplot(df, aes(x = KB)) +
-  geom_histogram(color = "black", alpha = 0.7, breaks = seq(7,25,by=2), fill = "skyblue") +
-  facet_wrap(~ PROVINCIA, ncol = 1) +
-  labs(x = "KB", y = "Frequency", title = "KB distribution by province") +
-  theme_bw()
-
-ggplot(df, aes(x = KB)) +
-  geom_density(color = "black", alpha = 0.7, fill = "skyblue") +
-  facet_wrap(~ PROVINCIA, ncol = 1) +
-  labs(x = "KB", y = "Frequency", title = "KB density plot by province") +
-  theme_bw()
-
-##  Boxplot y violin plot por provincia
-ggplot(df, aes(x = PROVINCIA, y = KB, fill = PROVINCIA)) +
-  geom_boxplot(outlier.shape = NA, alpha = 0.6) +
-  geom_jitter(width = 0.2, size = 2, alpha = 0.3) +
-  labs(title = "Comparison of head width between provinces", x = "Province", y = "Head Width (KB)")
-
-ggplot(df, aes(x = PROVINCIA, y = KB, fill = PROVINCIA)) +
-  geom_violin(trim = FALSE, color = "black", alpha = 0.6) + 
-  geom_jitter(width = 0.15, size = 1.5, alpha = 0.3, color = "black") +
-  labs(title = "Violin Plot of KB by Province", x = "Province", y = "Head Width (KB)")
-
-##  Comparación por sexo
-breaks <- seq(floor(min(df$KB)), ceiling(max(df$KB)), by = 2)
-df_table <- df |> mutate(KB_CLASS = cut(KB, breaks = breaks, include.lowest = TRUE))
-freq_table <- table(df_table$KB_CLASS, df$SEXO)
-percent_table <- round(prop.table(freq_table, margin = 2) * 100, 1)
-combined <- matrix(paste0(freq_table, " (", percent_table, "%)"), nrow = nrow(freq_table), dimnames = dimnames(freq_table))
-combined <- rbind(combined, Total = c(colSums(freq_table), sum(freq_table)))
-kable(combined, caption = "Frequency and Percentage of Head Width by Sex (1-unit bins)", align = "c") |>
-  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive"))
-
-ggplot(df, aes(x = SEXO, y = KB, fill = SEXO)) +
-  geom_boxplot(color = "black") +
-  geom_jitter(aes(col = SEXO), alpha = 0.2) +
-  scale_fill_manual(values = c("pink", "skyblue")) +
-  labs(title = "Comparison of Head Width by Sex", x = "Sex", y = "Head Width (KB)")
-
-ggplot(df, aes(x = KB, fill = SEXO)) +
-  geom_histogram(alpha = 0.6, position = "identity", binwidth = 0.5, color = "black") +
-  scale_fill_manual(values = c("pink", "skyblue")) +
-  labs(title = "Head Width Distribution by Sex", x = "Head Width (KB)", y = "Frequency") +
-  theme_minimal()
-
-##  Matriz de covarianza y correlación
-df |> dplyr::select(where(is.numeric)) |> drop_na() |> cov() |> round(2)
-cor(df$KB, df$EL)
-
-##  Correlación y regresión por sexo
-male_data <- df |> filter(SEXO == "macho")
-female_data <- df |> filter(SEXO == "hembra")
-male_cor <- cor(male_data$KB, male_data$EL)
-female_cor <- cor(female_data$KB, female_data$EL)
-
-if (male_cor > 0.5) {
-  ggplot(male_data, aes(x = EL, y = KB)) + geom_point() + geom_smooth(method = lm, se = FALSE) + theme_bw()
-  par(mfrow = c(2, 2))
-  plot(lm(KB ~ EL, data = male_data))
-}
-
-if (female_cor > 0.5) {
-  ggplot(female_data, aes(x = EL, y = KB)) + geom_point() + geom_smooth(method = lm, se = FALSE) + theme_bw()
-  par(mfrow = c(2, 2))
-  plot(lm(KB ~ EL, data = female_data))
-}
-
-##  Matriz de pares y correlaciones
-ggpairs(df |> select(KB, EL, SEXO), aes(col = SEXO),
-        diag = list(continuous = wrap("densityDiag")),
-        lower = list(continuous = wrap("points")),
-        upper = list(continuous = wrap("cor")))
+\newpage
+# Anexo. Código en R
+```{r ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
+```
