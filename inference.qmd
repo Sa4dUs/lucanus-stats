@@ -70,23 +70,30 @@ Se observa que en el caso de EL no puede rechazarse la hipótesis de normalidad,
 # Análisis Estadístico
 ## 1. ¿Entre qué valores fluctúa el promedio de la anchura de la cabeza y de la longitud de los élitros del Lacanus Cervus?
 ```{r, echo=FALSE}
-t.test(df$KB, data = df, var.equal = TRUE)
+t.test(df$KB, data = df) # Armin Note: with one variable, do not put var.equal
 ```
 
 ```{r, echo=FALSE}
-t.test(df$EL, data = df, var.equal = TRUE)
+t.test(df$EL, data = df) # Armin Note: with one variable, do not put var.equal
 ```
 
 ## 2. ¿Existe diferencia estadísticamente significativa entre el promedio de la anchura de la cabeza y la longitud de los élitros según sexo?
+[Armin Note: antes de hacer los test meter un boxplot que muestre machos-hembras para complementar lo que se va a ver en el test (no hace falta explicación super al detalle)]
+
+[Armin Note: dejar esto de por qué no hacemos var.test en KB] Como la muestra de KB no ha pasado el test de normalidad se pone directamente `var.equal = FALSE` en las opciones de `t.test`, ya que el test de varianzas `var.test` requiere normalidad de los datos.
 ```{r, echo=FALSE}
-t.test(df$KB ~ df$SEXO, data = df, var.equal = TRUE)
+t.test(df$KB ~ df$SEXO, data = df, var.equal = FALSE)  
 ```
 
+[Armin Note: dejar esto que es la explicación del var.test para saber si poner en el t.test var.equal false or true] Como la muestra de EL ha pasado el test de normalidad, para comparar las medias por sexos, primero se hace un test de varianzas para saber si las varianzas se pueden considerar iguales. Como el p-valor de este test sale muy pequeño, se pone `var.equal = FALSE` en las opciones de `t.test`.
+
 ```{r, echo=FALSE}
-t.test(df$EL ~ df$SEXO, data = df, var.equal = TRUE)
+t.test(df$EL ~ df$SEXO, data = df, var.equal = FALSE)
 ```
 
 ## 3. ¿Existe diferencia estadísticamente significativa entre el promedio de la anchura de la cabeza y la longitud de los élitros según si habitan en Cantabria o en Asturias?
+[Armin Note: antes de hacer los test meter un boxplot que muestre asturias-cantabria para complementar lo que se va a ver en el test (no hace falta explicación super al detalle)]
+
 ```{r, echo=FALSE}
 subset(df, PROVINCIA %in% c("Cantabria", "Asturias"))
 ```
@@ -95,13 +102,25 @@ subset(df, PROVINCIA %in% c("Cantabria", "Asturias"))
 df_sub <- subset(df, PROVINCIA %in% c("Cantabria", "Asturias"))
 ```
 
+[Armin Note: dejar esto de por qué no hacemos var.test en KB] Como la muestra de KB no ha pasado el test de normalidad se pone directamente `var.equal = FALSE` en las opciones de `t.test`, ya que el test de varianzas `var.test` requiere normalidad de los datos.
+
 ```{r, echo=FALSE}
-t.test(df_sub$KB ~ df_sub$PROVINCIA, data = df_sub, var.equal = TRUE)
+t.test(df_sub$KB ~ df_sub$PROVINCIA, data = df_sub, var.equal = FALSE)
+```
+
+[Armin Note: dejar esto que es la explicación del var.test para saber si poner en el t.test var.equal false or true] Como la muestra de EL ha pasado el test de normalidad, para comparar las medias por provincia, primero se hace un test de varianzas para saber si las varianzas se pueden considerar iguales. Como el p-valor de este test sale muy pequeño, se pone `var.equal = FALSE` en las opciones de `t.test`.
+
+```{r, echo=FALSE}
+var.test(df$EL~ df$SEXO)
+# small p-value --> var.equal = FALSE
 ```
 
 ```{r, echo=FALSE}
-t.test(df_sub$EL ~ df_sub$PROVINCIA, data = df_sub, var.equal = TRUE)
+t.test(df_sub$EL ~ df_sub$PROVINCIA, data = df_sub, var.equal = FALSE)
 ```
+
+
+
 
 ```{r, echo=FALSE}
 anova_mod <- aov(KB ~ PROVINCIA, data = df)
