@@ -36,7 +36,9 @@ library(nortest)
 # Metodología
 
 # Preparación de los datos
-```{r, echo=FALSE}
+
+::: {.callout-note collapse="true" title="Código"}
+```{r}
 df <- read.table(file = "data/lucanus.csv", header = TRUE, fill = TRUE)
 
 df <- df |>
@@ -50,6 +52,7 @@ df <- df |>
 
 summary(df)
 ```
+:::
 
 Se comenzó con el procesamiento y limpieza de los datos de los 265 ejemplares de Lucanus cervus. Para cada individuo se registraron la anchura de la cabeza (KB), la longitud de los élitros (EL), el sexo y la provincia de procedencia (Asturias, Cantabria u otras). Se verificaron los formatos de las variables, se corrigieron inconsistencias y se prepararon los datos para el análisis posterior.
 
@@ -57,13 +60,17 @@ Los intervalos de confianza y los contrastes de hipótesis para medias (y difere
 
 En nuestro caso, se ha comprobado si las muestras de KB y EL siguen distribuciones normales con el test no paramétrico de Lilliefors. 
 
-```{r, echo=FALSE}
+::: {.callout-note collapse="true" title="Código"}
+```{r}
 lillie.test(df$KB)
 ```
+:::
 
-```{r, echo=FALSE}
+::: {.callout-note collapse="true" title="Código"}
+```{r}
 lillie.test(df$EL)
 ```
+:::
 
 Se observa que en el caso de EL no puede rechazarse la hipótesis de normalidad, pero en el caso de KB sí. En este último caso, el teorema central del límite posibilita la comparación de medias entre sexos y entre provincias.
 
@@ -119,9 +126,6 @@ var.test(df$EL~ df$SEXO)
 t.test(df_sub$EL ~ df_sub$PROVINCIA, data = df_sub, var.equal = FALSE)
 ```
 
-
-
-
 ```{r, echo=FALSE}
 anova_mod <- aov(KB ~ PROVINCIA, data = df)
 summary(anova_mod)
@@ -135,13 +139,12 @@ table(df_sub$PROVINCIA)
 
 Como se supone que la muestra es representativa de la población, si $p_A$ es la proporción de escarabajos de Asturias y $p_C$ los de Cantabria, la única forma de que fueran iguales es $p_A = p_C = 0.5$. Para contrastar esta hipótesis, se realiza un test para comprobar si una proporción, por ejemplo, la de Asturias es igual a 0.5 frente a la hipótesis alternativa de que es mayor. En este caso, se supone una distribución binomial donde el éxito es que el escarabajo pertenezca a Asturias y el fallo es que pertenezca a Cantabria.
 
-```{r, echo=FALSE}
-# filter data in df_sub
-
+::: {.callout-note collapse="true" title="Código"}
+```{r}
 # Cantabria and Asturias study
 prop.test(x = 180, n = 208, alternative = "greater", conf.level = 0.95)
-
 ```
+:::
 
 La hipótesis nula $H_0: p_A = 0.5$ es rechazada debido a que el p-valor obtenido es mucho más pequeño que el nivel de significación $\alpha = 0.05$ frente a la alternativa $H_1: p_A > 0.5$. Por lo tanto, si $p_A$ es mayor a 0.5, $p_C$ debe ser menor (ya que es su complementario) y el hábitat de Asturias es más numeroso que el de Cantabria.
 
@@ -151,10 +154,12 @@ Para estudiar la distribución de géneros entre los escarabajos comenzamos estu
 table(df$SEXO)
 ```
 
-```{r, echo=FALSE}
+::: {.callout-note collapse="true" title="Código"}
+```{r}
 # By sex on the whole sample
 prop.test(x = 142, n = 265, alternative = "two.sided", conf.level = 0.95)
 ```
+:::
 
 En este caso, para este contraste $H_0: p_M = 0.5$ frente a $H_1: p_M \neq 0.5$ se obtiene un p-valor de 0.2688. Por lo tanto, al ser mucho mayor que el nivel de significancia $\alpha$, se concluye que las proporciones de machos y hembras son iguales en la población global (Asturias, Cantabria y otras).
 
@@ -164,9 +169,13 @@ Si nos centramos en las provincias de Asturias y Cantabria se puede realizar un 
 df_sub %>% group_by(PROVINCIA,SEXO) %>% summarise(n=n(), .groups="drop_last") %>% mutate(n_prov=sum(n))
 ```
 
-```{r, echo=FALSE}
+::: {.callout-note collapse="true" title="Código"}
+```{r}
 # By sex on the subset (Asturias and Cantabria only)
 prop.test(x = c(97,18), n = c(180,28), alternative = "two.sided", conf.level = 0.95)
 ```
+:::
 
 El p-valor del contraste $H_0: p_{MA} = p_{MC}$ frente a $H_1: p_{MA} \neq p_{MC}$ es 0.4093. Al ser mucho mayor que el nivel de significación 0.05, no existen evidencias suficientes para rechazar que la proporción de machos es la misma en Asturias y en Cantabria.
+
+# Conclusiones
