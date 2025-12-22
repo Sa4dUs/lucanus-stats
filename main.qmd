@@ -11,11 +11,13 @@ format:
     toc: true
     theme: cosmo
   pdf:
-    documentclass: article
+    documentclass: report
     number-sections: true
-    titlepage: false
+    titlepage: true
     toc-location: before-body
-    include-in-header: _extensions/tocdots/tocdots.tex
+    include-in-header:
+      - _extensions/header.tex
+      - _extensions/tocdots/tocdots.tex
     toc: true
     toc-title: "Índice"
     prefer-html: true 
@@ -37,7 +39,7 @@ library(MASS)
 library(GGally)
 ```
 
-# Objetivos del estudio
+## Objetivos del estudio
 
 El presente estudio se centra en el análisis biométrico del ciervo volante (Lucanus cervus), el mayor escarabajo de Europa, cuya población se ve amenazada por la destrucción de su hábitat natural, los bosques con abundante madera muerta. Este análisis tiene un doble interés: por un lado, evaluar posibles diferencias de tamaño entre machos y hembras; por otro, explorar la relación entre el tamaño de los individuos y la calidad del hábitat de procedencia, ya que se sospecha que en áreas con mayor disponibilidad y calidad de madera muerta los ejemplares alcanzan un mayor desarrollo.
 
@@ -49,7 +51,7 @@ Otro objetivo fundamental es analizar la correlación entre la anchura de la cab
 
 Finalmente, en los casos en que se identifique una relación significativa entre la anchura de la cabeza y la longitud del élitro para algún sexo, se ajustará un modelo de regresión lineal que explique la variación de la anchura de la cabeza en función de la longitud del élitro, con el objetivo de interpretar cuantitativamente esta relación morfológica y su relevancia biológica.
 
-# Metodología
+## Metodología
 
 El estudio se realizó utilizando ejemplares de la colección entomológica del Departamento de Biología de Organismos y Sistemas de la Universidad de Oviedo, incluyendo un total de 265 individuos de ciervo volante (Lucanus cervus), tanto machos como hembras, provenientes de Asturias, Cantabria y otras zonas. Para cada ejemplar se registraron la anchura de la cabeza (KB) y la longitud del élitro (EL) en milímetros, así como el sexo y la provincia de procedencia.
 
@@ -61,7 +63,7 @@ Se analizó la relación entre la anchura de la cabeza y la longitud del élitro
 
 Para la visualización de los datos y la generación de gráficos se utilizó el software R, empleando principalmente los paquetes ggplot2 y summarytools. Se elaboraron histogramas, boxplots, violín plots y tablas descriptivas que permitieron explorar la distribución de las variables, identificar diferencias entre grupos y mostrar la relación entre la anchura de la cabeza y la longitud del élitro de manera clara y reproducible.
 
-# Preparación de los Datos
+## Preparación de los Datos
 ```{r, echo=FALSE}
 lab <- read.table(file = "data/lucanus.csv", header = TRUE, fill = TRUE)
 
@@ -80,7 +82,7 @@ summary(lab)
 Se comenzó con el procesamiento y limpieza de los datos de los 265 ejemplares de Lucanus cervus. Para cada individuo se registraron la anchura de la cabeza (KB), la longitud de los élitros (EL), el sexo y la provincia de procedencia (Asturias, Cantabria u otras). Se verificaron los formatos de las variables, se corrigieron inconsistencias y se prepararon los datos para el análisis posterior.
 
 \newpage
-# Análisis Estadístico
+## Análisis Estadístico
 ```{r, echo=FALSE}
 set.seed(42)
 df <- lab |> 
@@ -98,7 +100,7 @@ Comparando esta muestra con la población total, se observa que las medidas de t
 summary(df$KB)
 ```
 
-## Análisis de la anchura de la cabeza
+### Análisis de la anchura de la cabeza
 Las gráficas muestran la distribución de la anchura de la cabeza (en KB) mediante un histograma y un boxplot, lo que permite evaluar la forma de la distribución y su dispersión.
 
 El histograma muestra una clara concentración de observaciones en el rango aproximado de 8 a 12 KB, donde se alcanza la mayor frecuencia. Esto indica que la mayor parte de la muestra se agrupa en valores bajos-medios, con un comportamiento central relativamente estable.
@@ -126,7 +128,7 @@ ggplot(df, aes(x = as.factor("1"), y = KB)) +
 
 En conjunto, la anchura de la cabeza presenta una distribución asimétrica con una dispersión global elevada, dominada por valores altos poco frecuentes. Este patrón es consistente con una población heterogénea analizada sin separación por sexo; una estratificación posterior permitiría reducir la variabilidad residual y afinar la interpretación de las medidas descriptivas.
 
-## Comparación de la anchura de la cabeza entre sexos
+### Comparación de la anchura de la cabeza entre sexos
 
 ```{r, echo=FALSE}
 breaks <- seq(floor(min(df$KB)), ceiling(max(df$KB)), by = 2)
@@ -202,7 +204,7 @@ with(
 )
 ```
 
-## Comparación de la anchura de la cabeza entre las provincias
+### Comparación de la anchura de la cabeza entre las provincias
 ```{r, echo=FALSE}
 # create intervals
 df$KB_cut <- cut(
@@ -351,7 +353,7 @@ with(
 
 A partir de aquí se puede comprobar que todo lo analizado anteriormente de forma cualitativa, como las asimetrías positivas (indicado con Skewness), viene descrito por su estadístico correspondiente en el estudio general. Se observa la alta dispersión de los valores de otras provincias y cómo Asturias tiene los valores más pequeños de media y quartiles.
 
-## Correlación entre la anchura de la cabeza y la longitud de los élitros
+### Correlación entre la anchura de la cabeza y la longitud de los élitros
 
 ```{r, echo=FALSE}
 df |> dplyr::select(where(is.numeric)) |>  
@@ -391,7 +393,7 @@ Se pueden distinguir dos concentraciones de puntos: una concentración pequeña 
 
 Estudiando la distribución de los puntos, se nota que el grupo pequeño está más concentrado que el segundo grupo, lo cual puede deberse a que en el primer grupo la relación KB-EL es más fuerte que en el segundo grupo.
 
-## Correlación entre la anchura de la cabeza y la longitud de los élitros para cada sexo
+### Correlación entre la anchura de la cabeza y la longitud de los élitros para cada sexo
 El gráfico muestra la relación entre la anchura de la cabeza (KB) y la longitud del élitro (EL) separada por sexo. Se observan conjuntos claramente diferenciados: los machos presentan valores mayores en ambas variables que las hembras. La correlación entre KB y EL es fuerte y positiva para ambos sexos (hembra: 0.946, macho: 0.948), indicando que a mayor anchura de cabeza, mayor longitud de élitro. Los diagramas de caja y los histogramas confirman que las hembras tienen medidas menores y rangos más estrechos que los machos. La dispersión de los puntos también refleja esta tendencia positiva, consistente en ambos grupos.
 
 Estudiaremos la gráfica de regresión lineal con más detalle, enfocándonos en cada uno de los grupos en el siguiente punto.
@@ -406,7 +408,8 @@ ggpairs(
 )
 ```
 
-## Recta de regresión de KB en función de EL para cada sexo
+### Recta de regresión de KB en función de EL para cada sexo
+Male
 ```{r, echo=FALSE}
 male_data <- df |> 
   filter(SEXO == "macho")
@@ -466,7 +469,7 @@ Al observar las gráficas de diagnóstico, los residuos frente a los valores aju
 
 El análisis de la relación entre la anchura de la cabeza (KB) y la longitud del élitro (EL) muestra resultados muy similares en machos y hembras. En ambos sexos, la correlación es extremadamente alta (r ≈ 0.948 en machos y r ≈ 0.946 en hembras), indicando que a medida que aumenta la longitud del élitro, también tiende a aumentar la anchura de la cabeza. Las gráficas de dispersión con las líneas de regresión ajustadas muestran un patrón lineal claro y consistente, y las gráficas de diagnóstico confirman que los supuestos de la regresión lineal —homocedasticidad, normalidad de los residuos y ausencia de valores influyentes extremos— se cumplen de manera satisfactoria en ambos casos. En conclusión podemos afirmar, esto sugiere que el modelo lineal describe de manera adecuada la relación entre KB y EL tanto en machos como en hembras, mostrando un patrón de crecimiento muy comparable entre los dos sexos.
 
-# Conclusiones
+## Conclusiones
 
 El análisis biométrico realizado sobre Lucanus cervus permitió obtener varias conclusiones relevantes tanto desde el punto de vista morfológico como ecológico.
 
@@ -481,6 +484,6 @@ La selección aleatoria de 150 ejemplares de un total de 265 permitió obtener r
 En decir, estos hallazgos aportan información valiosa sobre la morfología y la variabilidad de la especie, destacando la importancia de considerar el sexo y la procedencia geográfica al analizar las características biométricas.
 
 \newpage
-# Anexo. Código en R
+## Anexo. Código en R
 ```{r ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
 ```
