@@ -1,9 +1,9 @@
 ---
-title: "Estudio de datos biométricos sobre Lucanus Cervus"
+title: "Estudio de datos biométricos sobre Lucanus Cervus - Grupo 5"
 author: 
-- Marcelo Atanasio Domínguez Mateo
-- Arminda García Moreno
-- Alejandro García Prada
+- name: Marcelo Atanasio Domínguez Mateo
+- name: Arminda García Moreno
+- name: Alejandro García Prada
 
 date: today
 format: 
