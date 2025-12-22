@@ -407,7 +407,6 @@ ggpairs(
 ```
 
 ## Recta de regresión de KB en función de EL para cada sexo
-Male
 ```{r, echo=FALSE}
 male_data <- df |> 
   filter(SEXO == "macho")
@@ -437,7 +436,6 @@ if (male_cor > 0.5){
 ```
 Al analizar las gráficas de diagnóstico, se observa que los residuos frente a los valores ajustados no presentan patrones sistemáticos, lo que indica que la homocedasticidad (la varianza de los errores es constante) se cumple de manera razonable. El gráfico normal Q-Q muestra que los residuos se alinean aproximadamente sobre la línea diagonal, lo que sugiere que la suposición de normalidad de los errores es aceptable. La gráfica Scale-Location refuerza esta observación, mostrando que la dispersión de los residuos estandarizados se mantiene relativamente constante a lo largo de los valores ajustados (esto se observa porque la línea roja es bastante horizontal). Finalmente, el gráfico de residuos frente a leverage no evidencia puntos influyentes extremos, por lo que no hay valores atípicos que afecten de manera crítica al modelo (si hubiera tendríamos puntos dentro del area generada por las líneas punteadas). En conjunto, estos análisis indican que el modelo de regresión lineal describe muy bien la relación entre la longitud del élitro y la anchura de la cabeza en machos, y que los supuestos básicos del modelo se cumplen de manera satisfactoria.
 
-Female
 ```{r, echo=FALSE}
 female_data <- df |> 
   filter(SEXO == "hembra")
