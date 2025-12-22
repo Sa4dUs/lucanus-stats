@@ -373,7 +373,7 @@ Al ser un valor positivo de covarianza se puede afirmar que, cuando una de las v
 Aunque ambas variables se miden en la misma escala (milímetros), sus varianzas son distintas, lo que puede llevar a errores de interpretación de la magnitud de la relación lineal entre ambas. La matriz de varianzas-covarianzas sólo sirve para estudiar la tendencia y el sentido de la relación entre KB y EL. Por ello se va a utilizar el coeficiente de correlación para estudiar la intensidad de la misma.
 
 ```{r, echo=FALSE}
-cor(x = df$KB, y = df$EL) # correlation of KB and EL (general)
+correlation <- cor(x = df$KB, y = df$EL) # correlation of KB and EL (general)
 ```
 
 El coeficiente de correlación se calcula normalizando los datos. En este caso, se calcula mediante la función de R `cor(x,y)`, la cual calcula la correlación de Pearson.
