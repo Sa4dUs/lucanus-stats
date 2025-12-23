@@ -99,37 +99,81 @@ t.test(df$EL ~ df$SEXO, data = df, var.equal = FALSE)
 ```
 
 ## 3. ¿Existe diferencia estadísticamente significativa entre el promedio de la anchura de la cabeza y la longitud de los élitros según si habitan en Cantabria o en Asturias?
-[Armin Note: antes de hacer los test meter un boxplot que muestre asturias-cantabria para complementar lo que se va a ver en el test (no hace falta explicación super al detalle)]
+Con el objetivo de evaluar si existen diferencias morfológicas entre individuos procedentes de Cantabria y Asturias, se analizan la anchura de la cabeza (KB) y la longitud de los élitros (EL).
 
-```{r, echo=FALSE}
-subset(df, PROVINCIA %in% c("Cantabria", "Asturias"))
-```
+Previamente a los contrastes de hipótesis, se exploran visualmente las distribuciones mediante diagramas de caja, con el fin de complementar la interpretación de los resultados inferenciales.
 
 ```{r, echo=FALSE}
 df_sub <- subset(df, PROVINCIA %in% c("Cantabria", "Asturias"))
 ```
 
-[Armin Note: dejar esto de por qué no hacemos var.test en KB] Como la muestra de KB no ha pasado el test de normalidad se pone directamente `var.equal = FALSE` en las opciones de `t.test`, ya que el test de varianzas `var.test` requiere normalidad de los datos.
+```{r, echo=FALSE}
+ggplot(df_sub, aes(x = PROVINCIA, y = KB, fill = PROVINCIA)) +
+  geom_boxplot() +
+  labs(title = "Anchura de la cabeza (KB) por provincia",
+        x = "Provincia", y = "Anchura de la cabeza (KB)") +
+  theme_minimal()
+``` 
+
+```{r, echo=FALSE}
+ggplot(df_sub, aes(x = PROVINCIA, y = EL, fill = PROVINCIA)) +
+  geom_boxplot() +
+  labs(title = "Longitud de los Élitros (EL) por provincia",
+        x = "Provincia", y = "Longitud de los Élitros (EL)") +
+  theme_minimal()
+``` 
+Desde el punto de vista descriptivo, ambas variables presentan valores medios ligeramente superiores en Cantabria; no obstante, se observa una superposición considerable entre las distribuciones, lo que sugiere que las diferencias podrían no ser estadísticamente relevantes.
+
+## Contrastes de hipótesis para la comparación entre provincias
+### Anchura de la cabeza (KB)
+
+[Armin Note: dejar esto de por qué no hacemos var.test en KB]
+
+La variable KB no cumple el supuesto de normalidad. En este contexto, no resulta apropiado aplicar un test formal de igualdad de varianzas, ya que el contraste clásico de varianzas asume normalidad. Sin embargo, dado el tamaño muestral elevado, la inferencia sobre la media puede abordarse mediante un contraste t apoyado en el Teorema Central del Límite, que garantiza la aproximación normal de la distribución de la media muestral.
+
+Por tanto, se emplea directamente el test t de Welch, que no asume igualdad de varianzas y es más robusto frente a desviaciones de normalidad:
 
 ```{r, echo=FALSE}
 t.test(df_sub$KB ~ df_sub$PROVINCIA, data = df_sub, var.equal = FALSE)
 ```
+El contraste no permite rechazar la hipótesis nula de igualdad de medias al nivel de significación `\alpha = 0.05`. Aunque la media de KB es ligeramente mayor en Cantabria, la diferencia observada no es estadísticamente significativa.
 
-[Armin Note: dejar esto que es la explicación del var.test para saber si poner en el t.test var.equal false or true] Como la muestra de EL ha pasado el test de normalidad, para comparar las medias por provincia, primero se hace un test de varianzas para saber si las varianzas se pueden considerar iguales. Como el p-valor de este test sale muy pequeño, se pone `var.equal = FALSE` en las opciones de `t.test`.
+### Longitud de los élitros (EL)
+
+[Armin Note: dejar esto que es la explicación del var.test para saber si poner en el t.test var.equal false or true]
 
 ```{r, echo=FALSE}
 var.test(df$EL~ df$SEXO)
 # small p-value --> var.equal = FALSE
 ```
 
+En el caso de EL, la variable sí cumple el supuesto de normalidad, lo que permite evaluar previamente la homogeneidad de varianzas entre provincias. El test de igualdad de varianzas resulta significativo, indicando varianzas desiguales entre grupos. En consecuencia, se utiliza nuevamente el test t de Welch para comparar las medias:
+
 ```{r, echo=FALSE}
 t.test(df_sub$EL ~ df_sub$PROVINCIA, data = df_sub, var.equal = FALSE)
 ```
+El resultado del contraste tampoco permite rechazar la hipótesis nula al nivel $\alpha = 0.05$. Al igual que en KB, Cantabria presenta valores medios ligeramente superiores, pero la evidencia estadística no es suficiente para afirmar la existencia de una diferencia poblacional real.
+
+### Comparación global entre provincias
+
+Finalmente, se amplía el análisis a todas las provincias mediante un ANOVA de un factor, tanto para KB como para EL:
 
 ```{r, echo=FALSE}
 anova_mod <- aov(KB ~ PROVINCIA, data = df)
 summary(anova_mod)
 ```
+
+```{r, echo=FALSE}
+anova_mod <- aov(EL ~ PROVINCIA, data = df)
+summary(anova_mod)
+```
+
+En ninguno de los dos casos se detectan diferencias estadísticamente significativas entre provincias, lo que es consistente con los resultados obtenidos en la comparación específica entre Asturias y Cantabria.
+
+
+[Marcenota: esto si queréis pasadlo a la conclusión]
+
+Entre Asturias y Cantabria, las medias de la anchura de la cabeza (KB) y de la longitud de los élitros (EL) son ligeramente mayores en Cantabria; sin embargo, ninguna de estas diferencias resulta estadísticamente significativa. Al extender el análisis al conjunto de provincias, esta ausencia de diferencias significativas se mantiene. En consecuencia, no se dispone de evidencia estadística suficiente para afirmar que la morfología media de Lucanus cervus difiera en función de la provincia considerada.
 
 ## 4. Suponiendo que la muestra es representativa de la población, ¿los hábitats son igual de numerosos en Cantabria y Asturias?, ¿y en términos de sexo?
 
