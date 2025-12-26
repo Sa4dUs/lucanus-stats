@@ -76,15 +76,60 @@ Se observa que en el caso de EL no puede rechazarse la hipótesis de normalidad,
 
 # Análisis Estadístico
 ## 1. ¿Entre qué valores fluctúa el promedio de la anchura de la cabeza y de la longitud de los élitros del Lacanus Cervus?
+Antes de responder a esta pregunta utilizando inferencia estadística parece conveniente recordar los resultados obtenidos con estadística descriptiva:
 ```{r, echo=FALSE}
+ggplot(df, aes(x = as.factor("1"), y = EL)) +
+  geom_boxplot(fill = "skyblue", color = "black", width = 0.3) +
+  labs(title = "Diagrama de cajas longitud de los élitros (El)",
+       x = "",
+       y = "Longitud de los élitros (EL)") +
+  theme(axis.text.x = element_blank())
+```
+
+```{r, echo=FALSE}
+ggplot(df, aes(x = as.factor("1"), y = KB)) +
+  geom_boxplot(fill = "skyblue", color = "black", width = 0.3) +
+  labs(title = "Diagrama de cajas anchura de la cabeza (KB)",
+       x = "",
+       y = "Anchura de la cabeza (KB)") +
+  theme(axis.text.x = element_blank())
+```
+
+Estos diagramas y la sección previa (Preparación de Datos) nos servirá para plantear las hipótesis basadas en el promedio de cada una (12.04 en el caso de la KB y 20.91 en el caso de la EL). Además, también nos servirá para hacer una comparación entre los resultados que obtengamos y el rango intercuartílico.
+
+### Contraste de hipótesis
+
+Planteamos las siguientes hipótesis que analizaremos de forma separada:
+\begin{cases}
+H_0:\ \mu_{KB} = 0 \\
+H_1:\ \mu_{KB} \neq 0\\
+\end{cases}
+
+\begin{cases}
+H_0:\ \mu_{EL} = 0 \\
+H_1:\ \mu_{EL} \neq 0\\
+\end{cases}
+
+
+
+#### Anchura de la cabeza (KB)
+
+```{r, echo=FALSE}
+
 t.test(df$KB, data = df) # Armin Note: with one variable, do not put var.equal
 ```
+El intervalo de confianza al 95% indica que el promedio de KB fluctúa aproximadamente entre 11.57 y 12.51 unidades. Este intervalo se encuentra completamente dentro del rango intercuartílico observado en el diagrama de cajas, lo que sugiere que podemos rechazar la hipótesis nula y aceptar que el promedio difiere de 0. Por lo que hemos obtenido unos resultados coherentes con los obtenidos con estadística descriptiva.
+#### Longitud de los élitros (EL)
 
 ```{r, echo=FALSE}
 t.test(df$EL, data = df) # Armin Note: with one variable, do not put var.equal
 ```
+El test de una muestra indica que el promedio de la longitud de los élitros (EL) es aproximadamente 20.91 unidades, con un intervalo de confianza al 95% que fluctúa entre 20.61 y 21.21 unidades.
+
+Dado que el p-valor es extremadamente bajo (p < 2.2e-16), se rechaza la hipótesis nula de que la media sea igual a 0. Este resultado confirma que la media observada es significativamente diferente de cero y se encuentra dentro del rango esperado según la estadística descriptiva. El intervalo de confianza también se solapa con el rango intercuartílico del diagrama de cajas, lo que refuerza la consistencia de los datos.
 
 ## 2. ¿Existe diferencia estadísticamente significativa entre el promedio de la anchura de la cabeza y la longitud de los élitros según sexo?
+
 Con el fin de comprobar si existen diferencias morfológicas entre individuos machos y hembras, vamos a analizar el promedio de la anchura de la cabeza (KB) y la longitud de los élitros (EL).
 
 Antes de comenzar a aplicar técnicas de inferencia estadística vamos a contextualizar esta pregunta utilizando un diagrama de cajas que obtuvimos utilizando estadística descriptiva:
