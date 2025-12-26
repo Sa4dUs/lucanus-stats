@@ -87,11 +87,15 @@ t.test(df$EL, data = df) # Armin Note: with one variable, do not put var.equal
 ## 2. ¿Existe diferencia estadísticamente significativa entre el promedio de la anchura de la cabeza y la longitud de los élitros según sexo?
 [Armin Note: antes de hacer los test meter un boxplot que muestre machos-hembras para complementar lo que se va a ver en el test (no hace falta explicación super al detalle)]
 
+### Contrastes de hipótesis para la comparación entre sexos
+
+#### Anchura de la cabeza (KB)
 [Armin Note: dejar esto de por qué no hacemos var.test en KB] Como la muestra de KB no ha pasado el test de normalidad se pone directamente `var.equal = FALSE` en las opciones de `t.test`, ya que el test de varianzas `var.test` requiere normalidad de los datos.
 ```{r, echo=FALSE}
 t.test(df$KB ~ df$SEXO, data = df, var.equal = FALSE)  
 ```
 
+#### Longitud de los élitros (EL)
 [Armin Note: dejar esto que es la explicación del var.test para saber si poner en el t.test var.equal false or true] Como la muestra de EL ha pasado el test de normalidad, para comparar las medias por sexos, primero se hace un test de varianzas para saber si las varianzas se pueden considerar iguales. Como el p-valor de este test sale muy pequeño, se pone `var.equal = FALSE` en las opciones de `t.test`.
 
 ```{r, echo=FALSE}
@@ -124,10 +128,24 @@ ggplot(df_sub, aes(x = PROVINCIA, y = EL, fill = PROVINCIA)) +
 ``` 
 Desde el punto de vista descriptivo, ambas variables presentan valores medios ligeramente superiores en Cantabria; no obstante, se observa una superposición considerable entre las distribuciones, lo que sugiere que las diferencias podrían no ser estadísticamente relevantes.
 
-## Contrastes de hipótesis para la comparación entre provincias
-### Anchura de la cabeza (KB)
 
-[Armin Note: dejar esto de por qué no hacemos var.test en KB]
+
+
+### Contrastes de hipótesis para la comparación entre provincias
+Como tenemos dos parámetros vamos a realizar dos contrastes de hipótesis análogos para el KB y el EL:
+
+\begin{cases}
+H_0:\ \mu_{KB,\text{Asturias}} = \mu_{KB,\text{Cantabria}} \\
+H_1:\ \mu_{KB,\text{Asturias}} \neq \mu_{KB,\text{Cantabria}}
+\end{cases}
+
+
+\begin{cases}
+H_0:\ \mu_{EL,\text{Asturias}} = \mu_{EL,\text{Cantabria}} \\
+H_1:\ \mu_{EL,\text{Asturias}} \neq \mu_{EL,\text{Cantabria}}
+\end{cases}
+
+#### Anchura de la cabeza (KB)
 
 La variable KB no cumple el supuesto de normalidad. En este contexto, no resulta apropiado aplicar un test formal de igualdad de varianzas, ya que el contraste clásico de varianzas asume normalidad. Sin embargo, dado el tamaño muestral elevado, la inferencia sobre la media puede abordarse mediante un contraste t apoyado en el Teorema Central del Límite, que garantiza la aproximación normal de la distribución de la media muestral.
 
@@ -138,9 +156,7 @@ t.test(df_sub$KB ~ df_sub$PROVINCIA, data = df_sub, var.equal = FALSE)
 ```
 El contraste no permite rechazar la hipótesis nula de igualdad de medias al nivel de significación `\alpha = 0.05`. Aunque la media de KB es ligeramente mayor en Cantabria, la diferencia observada no es estadísticamente significativa.
 
-### Longitud de los élitros (EL)
-
-[Armin Note: dejar esto que es la explicación del var.test para saber si poner en el t.test var.equal false or true]
+#### Longitud de los élitros (EL)
 
 ```{r, echo=FALSE}
 var.test(df$EL~ df$SEXO)
