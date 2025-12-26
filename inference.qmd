@@ -85,22 +85,70 @@ t.test(df$EL, data = df) # Armin Note: with one variable, do not put var.equal
 ```
 
 ## 2. ¿Existe diferencia estadísticamente significativa entre el promedio de la anchura de la cabeza y la longitud de los élitros según sexo?
-[Armin Note: antes de hacer los test meter un boxplot que muestre machos-hembras para complementar lo que se va a ver en el test (no hace falta explicación super al detalle)]
+Con el fin de comprobar si existen diferencias morfológicas entre individuos machos y hembras, vamos a analizar el promedio de la anchura de la cabeza (KB) y la longitud de los élitros (EL).
+
+Antes de comenzar a aplicar técnicas de inferencia estadística vamos a contextualizar esta pregunta utilizando un diagrama de cajas que obtuvimos utilizando estadística descriptiva:
+
+```{r, echo=FALSE}
+ggplot(df, aes(x = SEXO, y = KB, fill = SEXO)) +
+  geom_boxplot(color = "black") +
+  geom_jitter(aes(col = SEXO), alpha = 0.2) +
+  scale_fill_manual(values = c("pink", "skyblue")) +
+  labs(title = "Anchura de la cabeza (KB) por sexo",
+       x = "Sex",
+       y = "Anchura de la cabeza (KB)") +
+  theme_minimal()
+```
+
+```{r, echo=FALSE}
+ggplot(df, aes(x = SEXO, y = EL, fill = SEXO)) +
+  geom_boxplot(color = "black") +
+  geom_jitter(aes(col = SEXO), alpha = 0.2) +
+  scale_fill_manual(values = c("pink", "skyblue")) +
+  labs(title = "Longitud de los élitros (EL) por sexo",
+       x = "Sex",
+       y = "Longitud de los élitros (EL)") +
+  theme_minimal()
+```
+La escasa superposición entre las cajas sugiere la posible existencia de diferencias entre sexos, lo que deberá confirmarse mediante contrastes de hipótesis.
 
 ### Contrastes de hipótesis para la comparación entre sexos
 
+Vamos a realizar dos contrastes de hipótesis análogos para el KB y el EL con respecto al sexo:
+
+\begin{cases}
+H_0:\ \mu_{KB,\text{Macho}} = \mu_{KB,\text{Hembra}} \\
+H_1:\ \mu_{KB,\text{Macho}} \neq \mu_{KB,\text{Hembra}}
+\end{cases}
+
+
+\begin{cases}
+H_0:\ \mu_{EL,\text{Macho}} = \mu_{EL,\text{Hembra}} \\
+H_1:\ \mu_{EL,\text{Macho}} \neq \mu_{EL,\text{Hembra}}
+\end{cases}
+
 #### Anchura de la cabeza (KB)
-[Armin Note: dejar esto de por qué no hacemos var.test en KB] Como la muestra de KB no ha pasado el test de normalidad se pone directamente `var.equal = FALSE` en las opciones de `t.test`, ya que el test de varianzas `var.test` requiere normalidad de los datos.
+
+Como la muestra de KB no ha pasado el test de normalidad se pone directamente `var.equal = FALSE` en las opciones de `t.test`, ya que el test de varianzas `var.test` requiere normalidad de los datos.
 ```{r, echo=FALSE}
 t.test(df$KB ~ df$SEXO, data = df, var.equal = FALSE)  
 ```
 
+Puesto que el p-valor obtenido es muy inferior al nivel de significación establecido ($\alpha=0.05$), se rechaza la hipótesis nula a favor de la alternativa. Esto indica que existen diferencias estadísticamente significativas en la anchura media de la cabeza entre machos y hembras.
+
+Además, el intervalo de confianza al 95% para la diferencia de medias se sitúa entre $−6.46 y −5.33$, lo que indica que la anchura media de la cabeza en hembras es significativamente menor que en machos, confirmando lo observado previamente en el diagrama de cajas.
+
 #### Longitud de los élitros (EL)
-[Armin Note: dejar esto que es la explicación del var.test para saber si poner en el t.test var.equal false or true] Como la muestra de EL ha pasado el test de normalidad, para comparar las medias por sexos, primero se hace un test de varianzas para saber si las varianzas se pueden considerar iguales. Como el p-valor de este test sale muy pequeño, se pone `var.equal = FALSE` en las opciones de `t.test`.
+
+Como la muestra de EL ha pasado el test de normalidad, para comparar las medias por sexos, primero se hace un test de varianzas para saber si las varianzas se pueden considerar iguales. Como el p-valor de este test sale muy pequeño, se pone `var.equal = FALSE` en las opciones de `t.test`.
 
 ```{r, echo=FALSE}
 t.test(df$EL ~ df$SEXO, data = df, var.equal = FALSE)
 ```
+
+Al igual que en el caso anterior, el p-valor es muy inferior al nivel de significación, por lo que se rechaza la hipótesis nula. Esto permite concluir que existen diferencias estadísticamente significativas en la longitud media de los élitros entre machos y hembras.
+
+El intervalo de confianza al 95% para la diferencia de medias, comprendido entre −2.90 y −1.86, indica que los machos presentan élitros significativamente más largos que las hembras.
 
 ## 3. ¿Existe diferencia estadísticamente significativa entre el promedio de la anchura de la cabeza y la longitud de los élitros según si habitan en Cantabria o en Asturias?
 Con el objetivo de evaluar si existen diferencias morfológicas entre individuos procedentes de Cantabria y Asturias, se analizan la anchura de la cabeza (KB) y la longitud de los élitros (EL).
@@ -132,7 +180,7 @@ Desde el punto de vista descriptivo, ambas variables presentan valores medios li
 
 
 ### Contrastes de hipótesis para la comparación entre provincias
-Como tenemos dos parámetros vamos a realizar dos contrastes de hipótesis análogos para el KB y el EL:
+Realizaremos dos contrastes de hipótesis análogos para el KB y el EL en función de la provincia:
 
 \begin{cases}
 H_0:\ \mu_{KB,\text{Asturias}} = \mu_{KB,\text{Cantabria}} \\
