@@ -1,13 +1,14 @@
 ---
 title: "inference"
 author: 
-- Marcelo Atanasio Domínguez Mateo
-- Arminda García Moreno
-- Alejandro García Prada
+- name: Marcelo Atanasio Domínguez Mateo
+- name: Arminda García Moreno
+- name: Alejandro García Prada
 
 date: today
 format: 
   html:
+    css: styles.css
     toc: true
     theme: cosmo
     code-tools: 
@@ -37,7 +38,7 @@ library(nortest)
 
 # Preparación de los datos
 
-::: {.callout-note collapse="true" title="Código"}
+::: {.callout-note .code collapse="true" title="Código"}
 ```{r}
 df <- read.table(file = "data/lucanus.csv", header = TRUE, fill = TRUE)
 
@@ -60,13 +61,13 @@ Los intervalos de confianza y los contrastes de hipótesis para medias (y difere
 
 En nuestro caso, se ha comprobado si las muestras de KB y EL siguen distribuciones normales con el test no paramétrico de Lilliefors. 
 
-::: {.callout-note collapse="true" title="Código"}
+::: {.callout-note .code collapse="true" title="Código"}
 ```{r}
 lillie.test(df$KB)
 ```
 :::
 
-::: {.callout-note collapse="true" title="Código"}
+::: {.callout-note .code collapse="true" title="Código"}
 ```{r}
 lillie.test(df$EL)
 ```
@@ -221,9 +222,6 @@ ggplot(df_sub, aes(x = PROVINCIA, y = EL, fill = PROVINCIA)) +
 ``` 
 Desde el punto de vista descriptivo, ambas variables presentan valores medios ligeramente superiores en Cantabria; no obstante, se observa una superposición considerable entre las distribuciones, lo que sugiere que las diferencias podrían no ser estadísticamente relevantes.
 
-
-
-
 ### Contrastes de hipótesis para la comparación entre provincias
 Realizaremos dos contrastes de hipótesis análogos para el KB y el EL en función de la provincia:
 
@@ -286,47 +284,83 @@ Entre Asturias y Cantabria, las medias de la anchura de la cabeza (KB) y de la l
 
 ## 4. Suponiendo que la muestra es representativa de la población, ¿los hábitats son igual de numerosos en Cantabria y Asturias?, ¿y en términos de sexo?
 
-```{r, echo=FALSE}
-table(df_sub$PROVINCIA)
-```
-
+### Contraste de hipótesis entre los hábitats
 Como se supone que la muestra es representativa de la población, si $p_A$ es la proporción de escarabajos de Asturias y $p_C$ los de Cantabria, la única forma de que fueran iguales es $p_A = p_C = 0.5$. Para contrastar esta hipótesis, se realiza un test para comprobar si una proporción, por ejemplo, la de Asturias es igual a 0.5 frente a la hipótesis alternativa de que es mayor. En este caso, se supone una distribución binomial donde el éxito es que el escarabajo pertenezca a Asturias y el fallo es que pertenezca a Cantabria.
 
-::: {.callout-note collapse="true" title="Código"}
+\begin{cases}
+H_0:\ p_a = 0.5 \\
+H_1:\ p_a > 0.5
+\end{cases}
+
+::: {.callout-note .data collapse="false" title="Datos"}
+```{r}
+# Cantabria and Asturias study
+table(df_sub$PROVINCIA)
+```
+:::
+
+::: {.callout-note .code collapse="true" title="Código"}
 ```{r}
 # Cantabria and Asturias study
 prop.test(x = 180, n = 208, alternative = "greater", conf.level = 0.95)
 ```
 :::
 
+::: {.callout-note .result collapse="false" title="Resultados"}
+- **P valor:** < 2.2e-16  
+- **IC (95%):** (0.8190767, 1.0000000)
+:::
+
 La hipótesis nula $H_0: p_A = 0.5$ es rechazada debido a que el p-valor obtenido es mucho más pequeño que el nivel de significación $\alpha = 0.05$ frente a la alternativa $H_1: p_A > 0.5$. Por lo tanto, si $p_A$ es mayor a 0.5, $p_C$ debe ser menor (ya que es su complementario) y el hábitat de Asturias es más numeroso que el de Cantabria.
 
-Para estudiar la distribución de géneros entre los escarabajos comenzamos estudiando la proporción de machos en la muestra completa de 265 especímenes. Para ello, se realiza un test de proporciones en la que el éxito será "ser macho" y se desea ver si esta proporción es igual a 0.5.
+### Contraste de hipótesis para sexos (muestra completa)
 
-```{r, echo=FALSE}
+Para estudiar la distribución de géneros entre los escarabajos comenzamos estudiando la proporción de machos en la muestra completa de 265 especímenes. Para ello, se realiza un test de proporciones en la que el éxito será "ser macho" ($p_M$) y se desea ver si esta proporción es igual a 0.5.
+
+\begin{cases}
+H_0:\ p_M = 0.5 \\
+H_1:\ p_M \neq 0.5
+\end{cases}
+
+::: {.callout-note .data collapse="false" title="Datos"}
+```{r}
 table(df$SEXO)
 ```
+:::
 
-::: {.callout-note collapse="true" title="Código"}
+::: {.callout-note .code collapse="true" title="Código"}
 ```{r}
 # By sex on the whole sample
 prop.test(x = 142, n = 265, alternative = "two.sided", conf.level = 0.95)
 ```
 :::
 
+::: {.callout-note .result collapse="false" title="Resultados"}
+- **P valor:** 0.2688
+- **IC (95%):** (0.4738449 0.5967968)
+:::
+
 En este caso, para este contraste $H_0: p_M = 0.5$ frente a $H_1: p_M \neq 0.5$ se obtiene un p-valor de 0.2688. Por lo tanto, al ser mucho mayor que el nivel de significancia $\alpha$, se concluye que las proporciones de machos y hembras son iguales en la población global (Asturias, Cantabria y otras).
 
+### Contraste de hipótesis para sexos (muestra Asturias-Cantabria)
 Si nos centramos en las provincias de Asturias y Cantabria se puede realizar un test para comprobar si son iguales las proporciones de escarabajos machos en ambas provincias. En Asturias se han observado 97 machos de un total de 180 escarabajos y en Cantabria se han observado 18 machos de un total de 28 escarabajos. Se supone que $p_{MA}$ es la proporción poblacional de escarabajos machos en Asturias y $p_{MC}$ la proporción de machos en Cantabria.
 
-```{r, warnings=FALSE,echo=FALSE}
+::: {.callout-note .data collapse="false" title="Datos"}
+```{r, warnings=FALSE}
 df_sub %>% group_by(PROVINCIA,SEXO) %>% summarise(n=n(), .groups="drop_last") %>% mutate(n_prov=sum(n))
 ```
+:::
 
-::: {.callout-note collapse="true" title="Código"}
+::: {.callout-note .code collapse="true" title="Código"}
 ```{r}
 # By sex on the subset (Asturias and Cantabria only)
 prop.test(x = c(97,18), n = c(180,28), alternative = "two.sided", conf.level = 0.95)
 ```
+:::
+
+::: {.callout-note .result collapse="false" title="Resultados"}
+- **P valor:** 0.4093
+- **IC (95%):** (-0.3164415  0.1085049)
 :::
 
 El p-valor del contraste $H_0: p_{MA} = p_{MC}$ frente a $H_1: p_{MA} \neq p_{MC}$ es 0.4093. Al ser mucho mayor que el nivel de significación 0.05, no existen evidencias suficientes para rechazar que la proporción de machos es la misma en Asturias y en Cantabria.

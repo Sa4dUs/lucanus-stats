@@ -1,0 +1,47 @@
+/* ================= DATA ================= */
+.callout.data {
+  border-left-color: #2ca02c;
+  background-color: #f2fbf4;
+}
+
+.callout.data .callout-header,
+.callout.data .callout-header button {
+  background-color: #2ca02c !important;
+  color: white;
+}
+
+.callout.data .callout-icon {
+  color: white;
+}
+
+/* ================= CODE ================= */
+.callout.code {
+  border-left-color: #4a90e2;
+  background-color: #f2f7fb;
+}
+
+.callout.code .callout-header,
+.callout.code .callout-header button {
+  background-color: #4a90e2 !important;
+  color: white;
+}
+
+.callout.code .callout-icon {
+  color: white;
+}
+
+/* ================= RESULT ================= */
+.callout.result {
+  border-left-color: #d62728;
+  background-color: #fbf2f2;
+}
+
+.callout.result .callout-header,
+.callout.result .callout-header button {
+  background-color: #d62728 !important;
+  color: white;
+}
+
+.callout.result .callout-icon {
+  color: white;
+}
