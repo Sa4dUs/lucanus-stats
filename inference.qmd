@@ -30,6 +30,7 @@ library(kableExtra)
 library(MASS)
 library(GGally)
 library(nortest)
+library(dplyr)
 ```
 
 # Objetivos
@@ -230,35 +231,67 @@ H_0:\ \mu_{KB,\text{Asturias}} = \mu_{KB,\text{Cantabria}} \\
 H_1:\ \mu_{KB,\text{Asturias}} \neq \mu_{KB,\text{Cantabria}}
 \end{cases}
 
-
-\begin{cases}
-H_0:\ \mu_{EL,\text{Asturias}} = \mu_{EL,\text{Cantabria}} \\
-H_1:\ \mu_{EL,\text{Asturias}} \neq \mu_{EL,\text{Cantabria}}
-\end{cases}
-
 #### Anchura de la cabeza (KB)
 
 La variable KB no cumple el supuesto de normalidad. En este contexto, no resulta apropiado aplicar un test formal de igualdad de varianzas, ya que el contraste clásico de varianzas asume normalidad. Sin embargo, dado el tamaño muestral elevado, la inferencia sobre la media puede abordarse mediante un contraste t apoyado en el Teorema Central del Límite, que garantiza la aproximación normal de la distribución de la media muestral.
 
 Por tanto, se emplea directamente el test t de Welch, que no asume igualdad de varianzas y es más robusto frente a desviaciones de normalidad:
 
-```{r, echo=FALSE}
+::: {.callout-note .data collapse="false" title="Datos"}
+```{r}
+df_sub %>% group_by(PROVINCIA) %>%
+summarise(
+media_KB = mean(KB, na.rm = TRUE),
+sd_KB = sd(KB, na.rm = TRUE),
+n = n()
+)
+```
+:::
+
+::: {.callout-note .code collapse="true" title="Código"}
+```{r}
 t.test(df_sub$KB ~ df_sub$PROVINCIA, data = df_sub, var.equal = FALSE)
 ```
+:::
+
+::: {.callout-note .result collapse="false" title="Resultados"}
+- **P valor:** 0.09691
+- **IC (95%):** (-2.7869873 0.2415905)
+:::
+
 El contraste no permite rechazar la hipótesis nula de igualdad de medias al nivel de significación $\alpha = 0.05$. Aunque la media de KB es ligeramente mayor en Cantabria, la diferencia observada no es estadísticamente significativa.
 
 #### Longitud de los élitros (EL)
 
 ```{r, echo=FALSE}
-var.test(df$EL~ df$SEXO)
+var.test(EL ~ PROVINCIA, data = df_sub)
 # small p-value --> var.equal = FALSE
 ```
 
 En el caso de EL, la variable sí cumple el supuesto de normalidad, lo que permite evaluar previamente la homogeneidad de varianzas entre provincias. El test de igualdad de varianzas resulta significativo, indicando varianzas desiguales entre grupos. En consecuencia, se utiliza nuevamente el test t de Welch para comparar las medias:
 
-```{r, echo=FALSE}
+::: {.callout-note .data collapse="false" title="Datos"}
+```{r}
+df_sub %>% group_by(PROVINCIA) %>%
+summarise(
+media_EL = mean(EL, na.rm = TRUE),
+sd_EL = sd(EL, na.rm = TRUE),
+n = n()
+)
+```
+:::
+
+::: {.callout-note .code collapse="true" title="Código"}
+```{r}
 t.test(df_sub$EL ~ df_sub$PROVINCIA, data = df_sub, var.equal = FALSE)
 ```
+:::
+
+::: {.callout-note .result collapse="false" title="Resultados"}
+- **P valor:** 0.08882
+- **IC (95%):** (-1.6565359  0.1219327)
+:::
+
 El resultado del contraste tampoco permite rechazar la hipótesis nula al nivel $\alpha = 0.05$. Al igual que en KB, Cantabria presenta valores medios ligeramente superiores, pero la evidencia estadística no es suficiente para afirmar la existencia de una diferencia poblacional real.
 
 ### Comparación global entre provincias
@@ -276,9 +309,6 @@ summary(anova_mod)
 ```
 
 En ninguno de los dos casos se detectan diferencias estadísticamente significativas entre provincias, lo que es consistente con los resultados obtenidos en la comparación específica entre Asturias y Cantabria.
-
-
-[Marcenota: esto si queréis pasadlo a la conclusión]
 
 Entre Asturias y Cantabria, las medias de la anchura de la cabeza (KB) y de la longitud de los élitros (EL) son ligeramente mayores en Cantabria; sin embargo, ninguna de estas diferencias resulta estadísticamente significativa. Al extender el análisis al conjunto de provincias, esta ausencia de diferencias significativas se mantiene. En consecuencia, no se dispone de evidencia estadística suficiente para afirmar que la morfología media de Lucanus cervus difiera en función de la provincia considerada.
 
