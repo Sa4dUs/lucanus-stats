@@ -334,11 +334,6 @@ El contraste no permite rechazar la hipótesis nula de igualdad de medias al niv
 
 #### Longitud de los élitros (EL)
 
-```{r, echo=FALSE}
-var.test(EL ~ PROVINCIA, data = df_sub)
-# small p-value --> var.equal = FALSE
-```
-
 En el caso de EL, la variable sí cumple el supuesto de normalidad, lo que permite evaluar previamente la homogeneidad de varianzas entre provincias. El test de igualdad de varianzas resulta significativo, indicando varianzas desiguales entre grupos. En consecuencia, se utiliza nuevamente el test t de Welch para comparar las medias:
 
 ::: {.callout-note .data collapse="false" title="Datos"}
@@ -467,3 +462,14 @@ prop.test(x = c(97,18), n = c(180,28), alternative = "two.sided", conf.level = 0
 El p-valor del contraste $H_0: p_{MA} = p_{MC}$ frente a $H_1: p_{MA} \neq p_{MC}$ es 0.4093. Al ser mucho mayor que el nivel de significación 0.05, no existen evidencias suficientes para rechazar que la proporción de machos es la misma en Asturias y en Cantabria.
 
 # Conclusiones
+El análisis inferencial realizado sobre Lucanus cervus permitió obtener conclusiones significativas acerca de la morfología y la distribución poblacional de la especie.
+
+Se confirmó la existencia de un claro dimorfismo sexual. Los machos presentan una anchura de cabeza y longitud de élitros significativamente mayores que las hembras, con mayor variabilidad y presencia de valores extremos, mientras que las hembras muestran medidas más homogéneas y consistentemente menores. Esto refleja diferencias morfológicas importantes entre sexos que se mantienen a nivel poblacional.
+
+En cuanto a la procedencia geográfica, no se detectaron diferencias estadísticamente significativas entre los ejemplares de Asturias y Cantabria, ni al comparar todas las provincias consideradas. Aunque los valores medios de KB y EL son ligeramente mayores en Cantabria, la evidencia estadística no permite concluir que exista una variación poblacional real en función de la provincia de origen.
+
+Respecto a la relación entre las variables morfológicas, se identificó que la anchura de la cabeza y la longitud de los élitros están fuertemente correlacionadas, lo que indica que la longitud del élitro puede servir como buen predictor de la anchura de la cabeza. Este patrón se mantiene tanto en machos como en hembras, y los modelos de regresión lineal ajustados respaldan la consistencia de esta asociación.
+
+El análisis de proporciones reveló que, entre los hábitats estudiados, los individuos de Asturias son más numerosos que los de Cantabria. Por otro lado, la proporción de machos y hembras se mantiene equilibrada a nivel poblacional, tanto en la muestra completa como en la comparativa entre Asturias y Cantabria, confirmando la ausencia de sesgo de sexo en la población estudiada.
+
+En síntesis, estos resultados aportan información relevante sobre la morfología y la distribución de Lucanus cervus, destacando la influencia del sexo sobre las características biométricas y confirmando la fuerte relación entre las dimensiones de cabeza y élitros. La ausencia de diferencias significativas por provincia y la igualdad de sexos en la población refuerzan la representatividad de la muestra y la fiabilidad de las conclusiones inferenciales obtenidas.
