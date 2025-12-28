@@ -42,7 +42,7 @@ Uno de los objetivos principales es determinar si existen diferencias estadísti
 
 De manera complementaria, el estudio busca analizar si el origen geográfico de los individuos, concretamente su procedencia de Asturias, Cantabria u otras zonas, se asocia con diferencias morfológicas significativas a nivel poblacional.
 
-Asimismo, se pretende evaluar la existencia de una relación estadísticamente significativa entre la anchura de la cabeza y la longitud de los élitros, tanto considerando el conjunto de la muestra como diferenciando por sexo. Mediante contrastes de correlación, se analiza si ambas variables presentan una asociación lineal a nivel poblacional y si dicha relación difiere entre machos y hembras.
+Asimismo, se pretende evaluar la existencia de una relación estadísticamente significativa entre la anchura de la cabeza y la longitud de los élitros, tanto considerando el conjunto de la muestra como diferenciando por sexo.
 
 Finalmente, en aquellos casos en los que se detecte una relación significativa entre ambas variables biométricas, se ajustarán modelos de regresión lineal con el objetivo de explicar la variación media de la anchura de la cabeza en función de la longitud de los élitros. Este enfoque permitirá interpretar cuantitativamente la relación morfológica entre ambas medidas y valorar su relevancia biológica desde una perspectiva inferencial, contribuyendo a una mejor comprensión de los patrones de crecimiento de la especie.
 
@@ -57,7 +57,7 @@ El análisis inferencial incluyó la estimación de parámetros poblacionales me
 
 Para estudiar la existencia de dimorfismo sexual, se compararon las medias de KB y EL entre machos y hembras mediante contrastes t de dos muestras independientes, empleando el test t de Welch cuando no se pudo asumir igualdad de varianzas. De forma análoga, se analizaron posibles diferencias morfológicas asociadas a la procedencia geográfica, comparando las medias entre individuos de Asturias y Cantabria y extendiendo posteriormente el análisis al conjunto de provincias mediante un análisis de la varianza de un factor (ANOVA).
 
-Además, se evaluó la relación entre la anchura de la cabeza y la longitud de los élitros mediante contrastes de correlación, tanto para el conjunto de la muestra como diferenciando por sexo. En aquellos casos en los que se detectó una asociación estadísticamente significativa, se consideró el ajuste de modelos de regresión lineal con el fin de explicar la variación media de la anchura de la cabeza en función de la longitud de los élitros desde una perspectiva inferencial.
+Además, se evaluó la relación entre la anchura de la cabeza y la longitud de los élitros mediante contrastes de correlación, tanto para el conjunto de la muestra como diferenciando por sexo. 
 
 Por último, se realizaron contrastes de proporciones para analizar la distribución de los individuos según el hábitat (Asturias frente a Cantabria) y según el sexo. Todos los análisis y visualizaciones se llevaron a cabo utilizando el software R empleando las librerías tidyverse, dplyr y ggplot2 para la manipulación y visualización de los datos, psych y summarytools para la obtención de estadísticos descriptivos, nortest para la evaluación de la normalidad, MASS y GGally para análisis multivariantes y exploración de relaciones entre variables, y knitr y kableExtra para la generación de tablas.
 
