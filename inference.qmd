@@ -36,7 +36,7 @@ library(dplyr)
 # Objetivos del estudio
 El presente estudio tiene como objetivo general realizar inferencias estadísticas sobre la morfología del ciervo volante (Lucanus cervus) a partir de una muestra representativa de individuos, con el fin de extraer conclusiones válidas a nivel poblacional.
 
-Desde esta perspectiva, el estudio se centra en el análisis de la anchura de la cabeza y de la longitud de los élitros, dos variables biométricas medidas en un total de 265 ejemplares, de los cuales se selecciona una muestra de 150 individuos considerada representativa de la población. A partir de esta muestra, se pretende estimar parámetros poblacionales mediante intervalos de confianza y contrastar hipótesis sobre los valores medios de dichas variables, superando el enfoque meramente descriptivo para situar el análisis en el ámbito de la inferencia estadística.
+Desde esta perspectiva, el estudio se centra en el análisis de la anchura de la cabeza y de la longitud de los élitros, dos variables biométricas medidas en un total de 265 ejemplares. A partir de esta población, se pretende estimar parámetros poblacionales mediante intervalos de confianza y contrastar hipótesis sobre los valores medios de dichas variables, superando el enfoque meramente descriptivo para situar el análisis en el ámbito de la inferencia estadística.
 
 Uno de los objetivos principales es determinar si existen diferencias estadísticamente significativas en el tamaño medio entre machos y hembras, lo que permitiría inferir la presencia de dimorfismo sexual en la especie. Para ello, se contrastan hipótesis de igualdad de medias poblacionales tanto para la anchura de la cabeza como para la longitud de los élitros, evaluando si las diferencias observadas en la muestra reflejan diferencias reales en la población de Lucanus cervus.
 
@@ -47,6 +47,21 @@ Asimismo, se pretende evaluar la existencia de una relación estadísticamente s
 Finalmente, en aquellos casos en los que se detecte una relación significativa entre ambas variables biométricas, se ajustarán modelos de regresión lineal con el objetivo de explicar la variación media de la anchura de la cabeza en función de la longitud de los élitros. Este enfoque permitirá interpretar cuantitativamente la relación morfológica entre ambas medidas y valorar su relevancia biológica desde una perspectiva inferencial, contribuyendo a una mejor comprensión de los patrones de crecimiento de la especie.
 
 # Metodología
+El estudio se llevó a cabo a partir de una base de datos formada por 265 ejemplares de ciervo volante (Lucanus cervus), considerados representativos de la población de estudio y procedentes principalmente de Asturias, Cantabria y otras zonas. Para cada individuo se registraron dos variables biométricas continuas, la anchura de la cabeza (KB) y la longitud de los élitros (EL), ambas medidas en milímetros, así como el sexo y la provincia de procedencia.
+
+Previamente al análisis estadístico se realizó un proceso de preparación y depuración de los datos. Las variables numéricas fueron transformadas a un formato homogéneo, corrigiendo problemas de notación decimal y posibles inconsistencias, mientras que las variables categóricas se estandarizaron y la procedencia geográfica se agrupó en tres categorías: Asturias, Cantabria y otras. Este tratamiento previo permitió asegurar la calidad de los datos y su adecuación para la inferencia estadística.
+
+Dado que el objetivo del estudio es realizar inferencias a nivel poblacional, se evaluaron los supuestos necesarios para la aplicación de los contrastes estadísticos. En particular, se analizó la normalidad de las distribuciones de KB y EL mediante el test de Lilliefors. En los casos en los que no se cumplió el supuesto de normalidad, y dado el tamaño muestral elevado, se recurrió al Teorema Central del Límite para justificar la aproximación normal de la distribución de la media muestral, permitiendo así la comparación de medias mediante contrastes t robustos.
+
+El análisis inferencial incluyó la estimación de parámetros poblacionales mediante intervalos de confianza al 95% para las medias de la anchura de la cabeza y de la longitud de los élitros. Asimismo, se realizaron contrastes de hipótesis de una muestra para evaluar si los promedios poblacionales de ambas variables diferían de valores teóricos de referencia.
+
+Para estudiar la existencia de dimorfismo sexual, se compararon las medias de KB y EL entre machos y hembras mediante contrastes t de dos muestras independientes, empleando el test t de Welch cuando no se pudo asumir igualdad de varianzas. De forma análoga, se analizaron posibles diferencias morfológicas asociadas a la procedencia geográfica, comparando las medias entre individuos de Asturias y Cantabria y extendiendo posteriormente el análisis al conjunto de provincias mediante un análisis de la varianza de un factor (ANOVA).
+
+Además, se evaluó la relación entre la anchura de la cabeza y la longitud de los élitros mediante contrastes de correlación, tanto para el conjunto de la muestra como diferenciando por sexo. En aquellos casos en los que se detectó una asociación estadísticamente significativa, se consideró el ajuste de modelos de regresión lineal con el fin de explicar la variación media de la anchura de la cabeza en función de la longitud de los élitros desde una perspectiva inferencial.
+
+Por último, se realizaron contrastes de proporciones para analizar la distribución de los individuos según el hábitat (Asturias frente a Cantabria) y según el sexo. Todos los análisis y visualizaciones se llevaron a cabo utilizando el software Rempleando las librerías tidyverse, dplyr y ggplot2 para la manipulación y visualización de los datos, psych y summarytools para la obtención de estadísticos descriptivos, nortest para la evaluación de la normalidad, MASS y GGally para análisis multivariantes y exploración de relaciones entre variables, y knitr y kableExtra para la generación de tablas.
+
+
 
 # Preparación de los datos
 
