@@ -219,7 +219,9 @@ H_1:\ \mu_{EL,\text{Macho}} \neq \mu_{EL,\text{Hembra}}
 
 #### Anchura de la cabeza (KB)
 
-Como la muestra de KB no ha pasado el test de normalidad se pone directamente `var.equal = FALSE` en las opciones de `t.test`, ya que el test de varianzas `var.test` requiere normalidad de los datos.
+La variable KB no satisface el supuesto de normalidad. En esta situación, no es adecuado aplicar un contraste formal de igualdad de varianzas, ya que los tests clásicos para este fin presuponen normalidad en las distribuciones. No obstante, dado el tamaño elevado de la muestra, es posible realizar inferencia sobre la media apoyándose en el Teorema Central del Límite, que asegura que la distribución de la media muestral se aproxima a una normal.
+
+En consecuencia, se utiliza directamente el test t de Welch, que no requiere asumir igualdad de varianzas y presenta una mayor robustez frente a desviaciones del supuesto de normalidad.
 
 ::: {.callout-note .code collapse="true" title="Código"}
 ```{r}
@@ -237,7 +239,19 @@ Además, el intervalo de confianza al 95% para la diferencia de medias se sitúa
 
 #### Longitud de los élitros (EL)
 
-Como la muestra de EL ha pasado el test de normalidad, para comparar las medias por sexos, primero se hace un test de varianzas para saber si las varianzas se pueden considerar iguales. Como el p-valor de este test sale muy pequeño, se pone `var.equal = FALSE` en las opciones de `t.test`.
+:::{.callout-note .data collapse="true" title="Datos"}
+```{r}
+df %>% 
+  group_by(SEXO) %>% 
+  summarise(
+    media_EL = mean(EL, na.rm = TRUE),
+    sd_EL = sd(EL, na.rm = TRUE),
+    n = n()
+  )
+```
+
+:::
+Dado que la variable EL sigue una distribución aproximadamente normal, es posible comprobar si las varianzas entre machos y hembras pueden considerarse iguales. El contraste de igualdad de varianzas muestra un resultado significativo, indicando que las dispersión de los datos difiere entre ambos sexos. Por esta razón, se aplica el t-test de Welch, que no asume igualdad de varianzas, para comparar correctamente las medias de los dos grupos.
 
 ::: {.callout-note .code collapse="true" title="Código"}
 ```{r}
