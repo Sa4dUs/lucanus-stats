@@ -1,5 +1,5 @@
 ---
-title: "Inferencia estadística"
+title: "Inferencia estadística - Grupo 5"
 author: 
 - name: Marcelo Atanasio Domínguez Mateo
 - name: Arminda García Moreno
@@ -14,6 +14,7 @@ format:
     theme: cosmo
     code-tools: 
       source: true
+    embed-resources: true
   
 execute:
   warning: false
