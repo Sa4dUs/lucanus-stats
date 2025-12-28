@@ -245,7 +245,7 @@ Por tanto, se emplea directamente el test t de Welch, que no asume igualdad de v
 ```{r, echo=FALSE}
 t.test(df_sub$KB ~ df_sub$PROVINCIA, data = df_sub, var.equal = FALSE)
 ```
-El contraste no permite rechazar la hipótesis nula de igualdad de medias al nivel de significación `\alpha = 0.05`. Aunque la media de KB es ligeramente mayor en Cantabria, la diferencia observada no es estadísticamente significativa.
+El contraste no permite rechazar la hipótesis nula de igualdad de medias al nivel de significación $\alpha = 0.05$. Aunque la media de KB es ligeramente mayor en Cantabria, la diferencia observada no es estadísticamente significativa.
 
 #### Longitud de los élitros (EL)
 
