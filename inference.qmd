@@ -377,14 +377,12 @@ H_1:\ p_a > 0.5
 
 ::: {.callout-note .data collapse="false" title="Datos"}
 ```{r}
-# Cantabria and Asturias study
 table(df_sub$PROVINCIA)
 ```
 :::
 
 ::: {.callout-note .code collapse="true" title="Código"}
 ```{r}
-# Cantabria and Asturias study
 prop.test(x = 180, n = 208, alternative = "greater", conf.level = 0.95)
 ```
 :::
@@ -413,7 +411,6 @@ table(df$SEXO)
 
 ::: {.callout-note .code collapse="true" title="Código"}
 ```{r}
-# By sex on the whole sample
 prop.test(x = 142, n = 265, alternative = "two.sided", conf.level = 0.95)
 ```
 :::
@@ -436,7 +433,6 @@ df_sub %>% group_by(PROVINCIA,SEXO) %>% summarise(n=n(), .groups="drop_last") %>
 
 ::: {.callout-note .code collapse="true" title="Código"}
 ```{r}
-# By sex on the subset (Asturias and Cantabria only)
 prop.test(x = c(97,18), n = c(180,28), alternative = "two.sided", conf.level = 0.95)
 ```
 :::
