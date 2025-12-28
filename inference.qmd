@@ -33,7 +33,18 @@ library(nortest)
 library(dplyr)
 ```
 
-# Objetivos
+# Objetivos del estudio
+El presente estudio tiene como objetivo general realizar inferencias estadísticas sobre la morfología del ciervo volante (Lucanus cervus) a partir de una muestra representativa de individuos, con el fin de extraer conclusiones válidas a nivel poblacional.
+
+Desde esta perspectiva, el estudio se centra en el análisis de la anchura de la cabeza y de la longitud de los élitros, dos variables biométricas medidas en un total de 265 ejemplares, de los cuales se selecciona una muestra de 150 individuos considerada representativa de la población. A partir de esta muestra, se pretende estimar parámetros poblacionales mediante intervalos de confianza y contrastar hipótesis sobre los valores medios de dichas variables, superando el enfoque meramente descriptivo para situar el análisis en el ámbito de la inferencia estadística.
+
+Uno de los objetivos principales es determinar si existen diferencias estadísticamente significativas en el tamaño medio entre machos y hembras, lo que permitiría inferir la presencia de dimorfismo sexual en la especie. Para ello, se contrastan hipótesis de igualdad de medias poblacionales tanto para la anchura de la cabeza como para la longitud de los élitros, evaluando si las diferencias observadas en la muestra reflejan diferencias reales en la población de Lucanus cervus.
+
+De manera complementaria, el estudio busca analizar si el origen geográfico de los individuos, concretamente su procedencia de Asturias, Cantabria u otras zonas, se asocia con diferencias morfológicas significativas a nivel poblacional.
+
+Asimismo, se pretende evaluar la existencia de una relación estadísticamente significativa entre la anchura de la cabeza y la longitud de los élitros, tanto considerando el conjunto de la muestra como diferenciando por sexo. Mediante contrastes de correlación, se analiza si ambas variables presentan una asociación lineal a nivel poblacional y si dicha relación difiere entre machos y hembras.
+
+Finalmente, en aquellos casos en los que se detecte una relación significativa entre ambas variables biométricas, se ajustarán modelos de regresión lineal con el objetivo de explicar la variación media de la anchura de la cabeza en función de la longitud de los élitros. Este enfoque permitirá interpretar cuantitativamente la relación morfológica entre ambas medidas y valorar su relevancia biológica desde una perspectiva inferencial, contribuyendo a una mejor comprensión de los patrones de crecimiento de la especie.
 
 # Metodología
 
@@ -116,16 +127,33 @@ H_1:\ \mu_{EL} \neq 0\\
 
 #### Anchura de la cabeza (KB)
 
-```{r, echo=FALSE}
+::: {.callout-note .code collapse="true" title="Código"}
+```{r}
 
-t.test(df$KB, data = df) # Armin Note: with one variable, do not put var.equal
+t.test(df$KB, data = df)
 ```
+:::
+
+::: {.callout-note .result collapse="false" title="Resultados"}
+- **P valor:** <2.2e-16
+- **IC (95%):** ( 11.57481  12.50670)
+:::
+
 El intervalo de confianza al 95% indica que el promedio de KB fluctúa aproximadamente entre 11.57 y 12.51 unidades. Este intervalo se encuentra completamente dentro del rango intercuartílico observado en el diagrama de cajas, lo que sugiere que podemos rechazar la hipótesis nula y aceptar que el promedio difiere de 0. Por lo que hemos obtenido unos resultados coherentes con los obtenidos con estadística descriptiva.
+
 #### Longitud de los élitros (EL)
 
-```{r, echo=FALSE}
-t.test(df$EL, data = df) # Armin Note: with one variable, do not put var.equal
+::: {.callout-note .code collapse="true" title="Código"}
+```{r}
+t.test(df$EL, data = df)
 ```
+:::
+
+::: {.callout-note .result collapse="false" title="Resultados"}
+- **P valor:** <2.2e-16
+- **IC (95%):** ( 20.60686  21.20824)
+:::
+
 El test de una muestra indica que el promedio de la longitud de los élitros (EL) es aproximadamente 20.91 unidades, con un intervalo de confianza al 95% que fluctúa entre 20.61 y 21.21 unidades.
 
 Dado que el p-valor es extremadamente bajo (p < 2.2e-16), se rechaza la hipótesis nula de que la media sea igual a 0. Este resultado confirma que la media observada es significativamente diferente de cero y se encuentra dentro del rango esperado según la estadística descriptiva. El intervalo de confianza también se solapa con el rango intercuartílico del diagrama de cajas, lo que refuerza la consistencia de los datos.
@@ -177,21 +205,35 @@ H_1:\ \mu_{EL,\text{Macho}} \neq \mu_{EL,\text{Hembra}}
 #### Anchura de la cabeza (KB)
 
 Como la muestra de KB no ha pasado el test de normalidad se pone directamente `var.equal = FALSE` en las opciones de `t.test`, ya que el test de varianzas `var.test` requiere normalidad de los datos.
-```{r, echo=FALSE}
+
+::: {.callout-note .code collapse="true" title="Código"}
+```{r}
 t.test(df$KB ~ df$SEXO, data = df, var.equal = FALSE)  
 ```
+:::
 
+::: {.callout-note .result collapse="false" title="Resultados"}
+- **P valor:** <2.2e-16
+- **IC (95%):** (-6.464071  -5.326740)
+:::
 Puesto que el p-valor obtenido es muy inferior al nivel de significación establecido ($\alpha=0.05$), se rechaza la hipótesis nula a favor de la alternativa. Esto indica que existen diferencias estadísticamente significativas en la anchura media de la cabeza entre machos y hembras.
 
-Además, el intervalo de confianza al 95% para la diferencia de medias se sitúa entre $−6.46 y −5.33$, lo que indica que la anchura media de la cabeza en hembras es significativamente menor que en machos, confirmando lo observado previamente en el diagrama de cajas.
+Además, el intervalo de confianza al 95% para la diferencia de medias se sitúa entre $−6.46$ y $−5.33$, lo que indica que la anchura media de la cabeza en hembras es significativamente menor que en machos, confirmando lo observado previamente en el diagrama de cajas.
 
 #### Longitud de los élitros (EL)
 
 Como la muestra de EL ha pasado el test de normalidad, para comparar las medias por sexos, primero se hace un test de varianzas para saber si las varianzas se pueden considerar iguales. Como el p-valor de este test sale muy pequeño, se pone `var.equal = FALSE` en las opciones de `t.test`.
 
-```{r, echo=FALSE}
+::: {.callout-note .code collapse="true" title="Código"}
+```{r}
 t.test(df$EL ~ df$SEXO, data = df, var.equal = FALSE)
 ```
+:::
+
+::: {.callout-note .result collapse="false" title="Resultados"}
+- **P valor:** <2.2e-16
+- **IC (95%):** (-2.903785  -1.861186)
+:::
 
 Al igual que en el caso anterior, el p-valor es muy inferior al nivel de significación, por lo que se rechaza la hipótesis nula. Esto permite concluir que existen diferencias estadísticamente significativas en la longitud media de los élitros entre machos y hembras.
 
