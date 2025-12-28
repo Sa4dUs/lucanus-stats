@@ -10,6 +10,7 @@ format:
   html:
     css: styles.css
     toc: true
+    toc-depth: 3
     theme: cosmo
     code-tools: 
       source: true
@@ -64,7 +65,7 @@ Por último, se realizaron contrastes de proporciones para analizar la distribuc
 
 
 # Preparación de los datos
-
+## Declaración de los tipos de variable
 ::: {.callout-note .code collapse="true" title="Código"}
 ```{r}
 df <- read.table(file = "data/lucanus.csv", header = TRUE, fill = TRUE)
@@ -84,22 +85,34 @@ summary(df)
 
 Se comenzó con el procesamiento y limpieza de los datos de los 265 ejemplares de Lucanus cervus. Para cada individuo se registraron la anchura de la cabeza (KB), la longitud de los élitros (EL), el sexo y la provincia de procedencia (Asturias, Cantabria u otras). Se verificaron los formatos de las variables, se corrigieron inconsistencias y se prepararon los datos para el análisis posterior.
 
+## Estudio de la normalidad de los datos
 Los intervalos de confianza y los contrastes de hipótesis para medias (y diferencia de medias) basados en la t-student asumen que las muestras provienen de poblaciones distribuidas en una normal. Cuando este supuesto no se cumple y la muestra es grande ($n \geq 30$), se puede aplicar el Teorema Central del Límite y asumir que la distribución de las medias se aproxima a una normal.
 
 En nuestro caso, se ha comprobado si las muestras de KB y EL siguen distribuciones normales con el test no paramétrico de Lilliefors. 
 
+#### Anchura de la cabeza (KB)
 ::: {.callout-note .code collapse="true" title="Código"}
 ```{r}
 lillie.test(df$KB)
 ```
 :::
 
+::: {.callout-note .result collapse="false" title="Resultados"}
+- **P-Valor:** < 2.2e-16
+:::
+
+#### Longitud de los élitros
 ::: {.callout-note .code collapse="true" title="Código"}
 ```{r}
 lillie.test(df$EL)
 ```
 :::
 
+::: {.callout-note .result collapse="false" title="Resultados"}
+- **P-Valor:** 0.4594
+:::
+
+#### Conclusiones 
 Se observa que en el caso de EL no puede rechazarse la hipótesis de normalidad, pero en el caso de KB sí. En el caso de KB, el teorema central del límite posibilita la comparación de medias entre sexos y entre provincias.
 
 # Análisis Estadístico
